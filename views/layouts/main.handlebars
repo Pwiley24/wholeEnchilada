@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Whole Enchiladas</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.js" charset="utf-8" defer></script>
+    <script src="/index.js" charset="utf-8" defer></script>
+</head>
+
+<header>
+<div class="navbar">
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+        <ul>
+            <li id="navImg"><img src="enchiladaPic.jpg"></li>
+            <div class="navbar-items">
+                <li><a href="/">Home</a></li>
+                <li><a href="/recipes">Recipes</a></li>
+                <li><a href="/reviews">Reviews</a></li>
+            </div>
+        </ul>
+    </div>
+</header>
+
+
+
+    <body>
+        <main>
+            {{{body}}}
+        </main>
+    </body>
+
+    <footer>
+        
+    </footer>
+</html>
