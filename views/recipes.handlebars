@@ -11,32 +11,83 @@
             </div>
 
             <div class="filter-input-container">
-                <label for="filter-start" class="filter-input-label">Start Date</label>
+                <label for="filter-cuisine" class="filter-input-label">Cuisine</label>
                 <div class="filter-input-element">
-                    <input type="date" id="filter-start" class="filter-input">
-                </div>
-            </div>
-
-            <div class="filter-input-container">
-                <label for="filter-end" class="filter-input-label">End Date</label>
-                <div class="filter-input-element">
-                    <input type="date" id="filter-end" class="filter-input">
-                </div>
-            </div>
-
-            <div class="filter-input-container">
-                <label for="filter-include-image" class="filter-input-label">Include Image</label>
-                <div class="filter-input-element">
-                    <select id="filter-image" class="filter-input" name="filter-image">
-                        <option selected value="Both">Both</option>
-                        <option  value="Yes">Yes</option>
-                        <option value="No">No</option>
+                    <select id="filter-cuisine" class="filter-input" name="filter-cuisine">
+                        <option selected value="">Any</option>
+                        <option>American</option>
+                        <option>Mexican</option>
+                        <option>Italian</option>
+                        <option>Chinese</option>
+                        <option>French</option>
+                        <option>Japanese</option>
                     </select>
                 </div>
             </div>
 
-            <div id="updateButtonContainer">
-                <button id="filter-update-button" type="button" class="buttons">Update</button>
+           <div class="filter-input-container">
+                <label for="filter-rating" class="filter-input-label">Rating</label>
+                <div class="filter-input-element">
+                    <select id="filter-rating" class="filter-input" name="filter-rating">
+                        <option selected value="">Any</option>
+                        <option>between 0-1</option>
+                        <option>Mexican</option>
+                        <option>Italian</option>
+                        <option>Chinese</option>
+                        <option>French</option>
+                        <option>Japanese</option>
+                    </select>
+                </div>
+            </div>
+
+            {{!-- <div class="filter-input-container">
+                <label for="filter-rating" class="filter-input-label">Rating</label>
+                <div class="filter-input-element checkbox-text">
+                    <input type="checkbox" id="filter-1" class="filter-input-checkbox" name="filter-1">
+                    <label for="filter-rating-1"> Between 0-1</label><br>
+                    <input type="checkbox" id="filter-2" class="filter-input-checkbox" name="filter-2">
+                    <label for="filter-rating-2"> Between 1-2</label><br>
+                    <input type="checkbox" id="filter-3" class="filter-input-checkbox" name="filter-3">
+                    <label for="filter-rating-3"> Between 2-3</label><br>
+                    <input type="checkbox" id="filter-4" class="filter-input-checkbox" name="filter-4">
+                    <label for="filter-rating-4"> Between 3-4</label><br>
+                    <input type="checkbox" id="filter-5" class="filter-input-checkbox" name="filter-5">
+                    <label for="filter-rating-5"> Between 4-5</label><br>
+                </div>
+            </div> --}}
+
+            <div class="filter-input-container">
+                <label for="filter-rating" class="filter-input-label">Rating</label>
+                <div class="filter-input-element">
+                    <div class="checkbox-text">
+                        <input type="checkbox" id="filter-1" class="filter-input-checkbox" name="filter-1">
+                        <label for="filter-1">Between 0-1</label>
+                    </div>
+                    <div class="checkbox-text">
+                        <input type="checkbox" id="filter-2" class="filter-input-checkbox" name="filter-2">
+                        <label for="filter-2">Between 1-2</label>
+                    </div>
+                    <div class="checkbox-text">
+                        <input type="checkbox" id="filter-3" class="filter-input-checkbox" name="filter-3">
+                        <label for="filter-3">Between 2-3</label>
+                    </div>
+                    <div class="checkbox-text">
+                        <input type="checkbox" id="filter-4" class="filter-input-checkbox" name="filter-4">
+                        <label for="filter-4">Between 3-4</label>
+                    </div>
+                    <div class="checkbox-text">
+                        <input type="checkbox" id="filter-5" class="filter-input-checkbox" name="filter-5">
+                        <label for="filter-5">Between 4-5</label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="filter-input-container">
+                <div id="updateButtonContainer">
+                    <button id="filter-update-button" type="button" class="buttons">Update</button>
+                </div>
             </div>
 
         </div>
