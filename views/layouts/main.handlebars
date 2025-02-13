@@ -4,8 +4,55 @@
     <title>The Whole Enchiladas</title>
     <link rel="stylesheet" href="/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" crossorigin="anonymous">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.js" charset="utf-8" defer></script>
     <script src="/index.js" charset="utf-8" defer></script>
+    <script language="JavaScript">
+      function showform(dowhat) {
+        /*
+         * four DIVS: browse, insert, update, delete
+         * this function sets one visible the others not
+         */
+        if (dowhat == "addRecord") {
+          document.getElementById("browse").style.display = "none";
+          document.getElementById("insert").style.display = "block";
+          document.getElementById("updateRecord").style.display = "none";
+          document.getElementById("deleteRecord").style.display = "none";
+        } else if (dowhat == "updateRecord") {
+          document.getElementById("browse").style.display = "none";
+          document.getElementById("insert").style.display = "none";
+          document.getElementById("updateRecord").style.display = "block";
+          document.getElementById("deleteRecord").style.display = "none";
+        } else if (dowhat == "deleteRecord") {
+          document.getElementById("browse").style.display = "none";
+          document.getElementById("insert").style.display = "none";
+          document.getElementById("updateRecord").style.display = "none";
+          document.getElementById("deleteRecord").style.display = "block";
+        } else {
+          //by default display browse
+          document.getElementById("browse").style.display = "block";
+          document.getElementById("insert").style.display = "none";
+          document.getElementById("updateRecord").style.display = "none";
+          document.getElementById("deleteRecord").style.display = "none";
+        }
+      }
+      function addRecord() {
+        showform("addRecord");
+      }
+      function updateRecord(oid) {
+        showform("updateRecord");
+      }
+      function deleteRecord(oid) {
+        showform("deleteRecord");
+      }
+      function browse() {
+        showform("browse");
+      }
+      function showAll() {
+        showform("all");
+      }
+    </script>
 </head>
 
 <header>
@@ -21,6 +68,9 @@
             <div class="navbar-items">
                 <li><a href="/">Home</a></li>
                 <li><a href="/recipes">Recipes</a></li>
+                <li><a href="/ingredients">Ingredients</a></li>
+                <li><a href="/cookedrecipes">Cooked Recipes</a></li>
+                <li><a href="/cuisines">Cuisine</a></li>
                 <li><a href="/reviews">Reviews</a></li>
             </div>
         </ul>

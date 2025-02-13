@@ -30,18 +30,25 @@ app.get('/recipes', function (req, res, next) {
     res.status(200).render("recipes");
 });
 
+// Display Ingredients page
+app.get('/ingredients', function (req, res, next) {
+    res.status(200).render("ingredients");
+});
+
+// Display Cooked Recipes page
+app.get('/cookedRecipes', function (req, res, next) {
+    res.status(200).render("cookedRecipes");
+});
+
+// Display Cuisines page
+app.get('/cuisines', function (req, res, next) {
+    res.status(200).render("cuisines");
+});
+
 // Display Reviews page
 app.get('/reviews', function (req, res, next) {
     res.status(200).render("reviews");
 });
-
-// // Display Testimonies page
-// app.get('/testimonials', function (req, res, next) {
-//     var context = {
-//         testimonyData: testimonyData
-//     };
-//     res.status(200).render("testimoniesPage", context);
-// });
 
 // Display 404 page
 app.get('*', function (req, res, next) {
