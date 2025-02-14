@@ -25,37 +25,6 @@
                 </div>
             </div>
 
-           <div class="filter-input-container">
-                <label for="filter-rating" class="filter-input-label">Rating</label>
-                <div class="filter-input-element">
-                    <select id="filter-rating" class="filter-input" name="filter-rating">
-                        <option selected value="">Any</option>
-                        <option>between 0-1</option>
-                        <option>Mexican</option>
-                        <option>Italian</option>
-                        <option>Chinese</option>
-                        <option>French</option>
-                        <option>Japanese</option>
-                    </select>
-                </div>
-            </div>
-
-            {{!-- <div class="filter-input-container">
-                <label for="filter-rating" class="filter-input-label">Rating</label>
-                <div class="filter-input-element checkbox-text">
-                    <input type="checkbox" id="filter-1" class="filter-input-checkbox" name="filter-1">
-                    <label for="filter-rating-1"> Between 0-1</label><br>
-                    <input type="checkbox" id="filter-2" class="filter-input-checkbox" name="filter-2">
-                    <label for="filter-rating-2"> Between 1-2</label><br>
-                    <input type="checkbox" id="filter-3" class="filter-input-checkbox" name="filter-3">
-                    <label for="filter-rating-3"> Between 2-3</label><br>
-                    <input type="checkbox" id="filter-4" class="filter-input-checkbox" name="filter-4">
-                    <label for="filter-rating-4"> Between 3-4</label><br>
-                    <input type="checkbox" id="filter-5" class="filter-input-checkbox" name="filter-5">
-                    <label for="filter-rating-5"> Between 4-5</label><br>
-                </div>
-            </div> --}}
-
             <div class="filter-input-container">
                 <label for="filter-rating" class="filter-input-label">Rating</label>
                 <div class="filter-input-element">
@@ -104,6 +73,71 @@
             </div>
         </div>
         <button type="button" id="add-recipe-button"><i class="fas fa-plus"></i></button>
+
+
+
+    {{!-- This modal may be used to implement adding new recipes. Need more info on database incorporation to 
+    do this properly. --}}
+    <div id="modal-backdrop" class="hidden"></div>
+        <div id="add-recipe-modal" class="hidden">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h3>Add a new recipe to the website!</h3>
+                    <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
+                </div>
+
+<div class="modal-body">
+            <form id="recipe-form">
+                <div class="recipe-input-element">
+                    <label for="modal-name" class="modal-label">Recipe Name</label>
+                    <input type="text" id="modal-name" name="recipe-name" required>
+                </div>
+
+                <div class="recipe-input-element">
+                    <label for="modal-cuisine" class="modal-label">Cuisine</label>
+                    <select id="modal-cuisine" name="recipe-cuisine" required>
+                        <option selected disabled value="">Select a Cuisine</option>
+                        <option value="American">American</option>
+                        <option value="Mexican">Mexican</option>
+                        <option value="Italian">Italian</option>
+                        <option value="Chinese">Chinese</option>
+                        <option value="French">French</option>
+                        <option value="Japanese">Japanese</option>
+                    </select>
+                </div>
+
+                <div id="ingredients-container">
+                    <label class="modal-label">Ingredients</label>
+                    <div class="recipe-input-element ingredient-group">
+                        <input type="text" name="ingredientName[]" placeholder="Ingredient Name" required>
+                        <input type="number" name="ingredientQty[]" placeholder="Quantity" required>
+                        <select name="ingredientUOM[]">
+                            <option value="g">g</option>
+                            <option value="ml">ml</option>
+                            <option value="cup">cup</option>
+                            <option value="tbsp">tbsp</option>
+                            <option value="tsp">tsp</option>
+                            <option value="slices">slices</option>
+                        </select>
+                        <button type="button" class="remove-ingredient">Remove</button>
+                    </div>
+                </div>
+
+                <button type="button" id="add-ingredient">Add Ingredient</button>
+
+                <div class="recipe-input-element">
+                    <label for="modal-description" class="modal-label">Instructions</label>
+                    <textarea id="modal-description" rows="4" placeholder="Enter recipe instructions..."></textarea>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" id="modal-cancel" class="modal-hide-button action-button">Cancel</button>
+                    <button type="button" id="modal-accept" class="action-button">Upload Recipe</button>
+                </div>
+            </div>
+        </div>
+    
     </div>
 
     

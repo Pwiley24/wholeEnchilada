@@ -1,6 +1,6 @@
 /* Base Styling */
 html, body {
-    background-color: #D9D9D9; /* Light gray background for the page */
+    background-color: #ECE3DA;
     font-family: "Work Sans", sans-serif;
     color: #0E0E2C;
     margin: 0;
@@ -35,7 +35,7 @@ p {
     position:fixed;
     right:0;
     bottom:0;
-    background-color: rgb(252, 72, 72);
+    background-color: #984511;
     color: white;
     border-radius: 100%;
     font-size: 50px;
@@ -58,6 +58,101 @@ p {
     font-size:smaller
 }
 
+#modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+
+  #add-recipe-modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1010;
+    overflow: scroll;
+  }
+
+  .recipe-input-element {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    margin: 10px 0;
+  }
+
+  .ingredient-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.remove-ingredient {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#add-ingredient {
+    background: green;
+    color: white;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+  
+  .recipe-input-element > label {
+    font-weight: 600;
+    flex: 0 1 auto;
+    margin-right: 10px;
+  }
+
+.modal-label{
+    width:100px;
+}
+
+  .modal-dialog {
+    width: auto;
+    max-width: 600px;
+    min-width: 350px;
+    min-height: 300px;
+    margin: 40px auto;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+  }
+  
+  .modal-header {
+    position: relative;
+    padding: 10px 20px;
+  }
+  
+  .modal-header h3 {
+    margin: 0;
+    font-size: 28px;
+  }
+  
+  #modal-close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 24px;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+
 /* Center page content */
 .centerContainer {
     display: flex;
@@ -72,17 +167,28 @@ p {
     margin-right: 200px;
 }
 
-/* Testimonial - all page content */
+/* recipe - all page content */
 .recipes-all-content {
     display:flex;
 }
 
-/* Testimonial Page Filter Styling */
+.recipe-title{
+    color:#9B7B9C;
+}
+
+.recipe-ingredients{
+    color:#5c568a
+}
+
+.recipe-instructions{
+    color:#578a56
+}
+
+/* recipe Page Filter Styling */
 #recipes-filter-container {
-    background-color: #AAAAAA;
+    background-color: #3D4547;
     min-width: 200px;
-    height: 520px;
-    /* margin: 20px 5px; */
+    height: 320px;
     margin: 10px 10px auto 10px;
     border-radius: 5px;
     padding: 20px;
@@ -90,6 +196,7 @@ p {
 
 #recipes-filter-container h2 {
     margin: 0px;
+    color:#ECE3DA;
 }
 
 .filter-input-container {
@@ -97,6 +204,7 @@ p {
     margin: 20px 0;
     display: flex;
     align-items: center;
+    color:#ECE3DA;
 }
 
 .filter-input-element {
@@ -158,7 +266,7 @@ p {
     width: 340px;
     padding: 10px;
     margin: 0 10px 10px;
-    background-color: #AAAAAA;
+    background-color: #ECE3DA;
     border-radius: 5px;
 }
 
@@ -169,113 +277,50 @@ ul {
     padding: 0;
     width: 100%;
     overflow: hidden;
-    background-color: #A6A9A9;
+    background-color: #677100;
     display: flex;
-    align-items: center; /* Center align items vertically */
-    justify-content: space-between; /* Space between logo and menu items */
+    align-items: center;
+    justify-content: space-between; 
 }
 
 #navImg {
     display: flex;
     align-items: center;
-    height: 48px; /* Fixed height to prevent stretching */
+    height: 100px; 
     margin-left: 20px;
 }
+
 #navImg img {
     height: 100%;
-    width: auto;  /* Maintain aspect ratio */
-    max-width: 250px; /* Ensure it does not stretch beyond this width */
+    width: auto; 
+    max-width: 250px; 
 }
 
 li {
     float: none;
-    margin: 0; /* Remove margin between list items */
+    margin: 0; 
 }
 
 li a {
     display: block;
     color: white;
     text-align: center;
-    padding: 16px 8px; /* Adjust padding to bring items closer */
+    padding: 16px 8px;
     text-decoration: none;
 }
 
 li a:hover {
-    background-color: #6A6A6A;
+    background-color: #4f5600;
     height: 100%;
 }
 
-/* Ensure menu items are close together and on the right */
 ul {
     justify-content: space-between;
 }
 ul .navbar-items {
     display: flex;
-    gap: 10px; /* Adjust gap between buttons */
-    margin-right: 20px; /* Space on the right */
-}
-
-/* Hide checkbox by default */
-#menu-toggle {
-    display: none;
-}
-
-/* Hamburger Menu */
-.menu-icon {
-    display: none;
-    cursor: pointer;
-    margin-left: auto;
-}
-.menu-icon span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    background-color: #AAA;
-}
-
-/* Responsive styles */
-@media screen and (max-width: 768px) {
-    ul {
-        flex-direction: column;
-        display: none;
-        width: 100%;
-        text-align: center;
-    }
-    li {
-        float: none;
-        width: 100%;
-        margin: 5px 0;
-    }
-    #navImg {
-        height: auto; /* Adjust height to auto for responsive */
-        margin: auto;
-        display: block;
-    }
-    #navImg img {
-        height: auto; /* Maintain aspect ratio */
-        width: auto;  /* Maintain aspect ratio */
-        max-height: 70px;
-        max-width: 100px; /* Ensure the logo does not stretch too much */
-    }
-    .menu-icon {
-        display: block;
-    }
-    input[type="checkbox"]:checked ~ ul {
-        display: flex;
-    }
-}
-
-
-/* footer */
-footer {
-    margin-top: 50px;
-    text-align: center;
-    background-color: #A6A9A9;
-}
-
-footer img {
-    padding-top: 5px;
+    gap: 10px; 
+    margin-right: 20px; 
 }
 
 /* Input Styling */
@@ -290,19 +335,9 @@ footer img {
 
 .formInputContainer {
     display: flex;
-    width: 100%; /* Changed the width to be more dynamic */
+    width: 100%; 
     margin: 20px 0;
-    /* align-items: center; */
     justify-content: center;
-}
-.reviews-header {
-    background-color: #6A6A6A;
-    color: white;
-    padding: 20px;
-    margin-top: 20px;
-    width: 50%;
-    border-radius: 10px;
-    text-align: center;
 }
 
 .centerForm {
@@ -312,7 +347,7 @@ footer img {
 
 .formDiv{
     display:inline-flex;
-    background-color: #AAAAAA;
+    background-color: #3D4547;
     border-radius:10px;
     padding-bottom:20px;
     padding-right:30px;
@@ -328,7 +363,7 @@ footer img {
     width: 60%;
     margin-left: 10px;
     padding: 3px;
-    border: 1px solid #dadada;
+    border: 1px solid #3D4547;
     border-radius: 3px;
 }
 
@@ -348,6 +383,7 @@ input[type=text], select, textarea {
 
 .formInputLabel {
     width: 40%;
+    color: #ECE3DA;
 }
 
 #submitButtonContainer {
@@ -373,15 +409,15 @@ input[type=text], select, textarea {
 }
 
 .buttons:hover {
-    background: #9B7B9C;
+    background: #C67E10;
     color: #FFFFFF;
 }
 input[type=submit]:hover {
-    background: #9B7B9C;
+    background: #C67E10;
     color: #FFFFFF;
 }
 input::file-selector-button:hover {
-    background: #9B7B9C;
+    background: #C67E10;
     color: #FFFFFF;
 }
 
