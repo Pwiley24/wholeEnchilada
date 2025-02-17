@@ -1,1 +1,87 @@
-<h1>This is a list of the ingredients needed for all the recipes we have stored</h1>
+<h1>Ingredients</h1>
+<div id="browse" style="display: block">
+<p>Browse Ingredients</p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th><a href="#" onclick="addRecord()">New</a></th>
+    <th></th>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Cost (per gram)</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Chicken</td>
+    <td>0.00904761904</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Olive Oil</td>
+    <td>0.0196</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Egg</td>
+    <td>0.5</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Avocado</td>
+    <td>0.00275</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Pita Bread</td>
+    <td>0.02645549304</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+</table>
+</div> <!-- browse -->
+
+<div id="insert" style="display: none">
+    <form id="addIngredient">
+        <legend><strong>Add Ingredient</strong></legend>
+          <fieldset class="fields">
+            <label> Name </label> <input type="text" name="recipe">
+            <label> Cost (per gram) </label> <input type="number" name="cost">
+          </fieldset>
+          <input class="btn" type="submit" id="addIngredient" value="Add Ingredient">
+          <input class="btn" type="button" value="cancel" onclick="browse()">
+	</form> <!--add new -->
+</div><!-- insert -->
+
+<div id="updateRecord" style="display: none">
+  <form id="updateIngredient">
+      <legend><strong>Update Ingredient</strong></legend>
+          <fieldset class="fields">
+          <label> ID </label>
+          <label> Name </label> <input type="text" name="recipe">
+          <label> Cost (per gram) </label> <input type="number" name="costPerGram">
+    </fieldset>
+    <input class="btn" type="submit" id="UpdateSaveIngredient" value="Save Update Ingredient">
+          <input class="btn" type="button" value="cancel" onclick="browse()">
+  </form> 
+</div><!-- update -->
+
+<div id="deleteIngredient" style="display: none">
+  <form id="deleteIngredient">
+      <legend><strong>Delete Ingredient</strong></legend>
+          <fieldset class="fields">
+          <p>Are you sure you wish to delete the following?</p>
+          <label> ID: </label>
+            <label> Name </label>
+            <label> Cost (per gram) </label>
+    </fieldset>
+    <input class="btn" type="submit" id="DeleteIngredient" value="DeleteIngredient">
+          <input class="btn" type="button" value="cancel" onclick="browse()">
+  </form> 
+</div><!-- delete -->
