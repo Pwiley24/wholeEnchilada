@@ -1,1 +1,79 @@
-<h1>Here we will display all the available cuisines. Feel free to learn a little bit about them</h1>
+<h1>Cuisines</h1>
+<div id="browse" style="display: block">
+<p><strong>Browse Cuisines</strong></p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th><a href="#" onclick="addRecord()">New</a></th>
+    <th></th>
+    <th>ID</th>
+    <th>Name</th>
+  </tr>
+  <tr>
+    <td >1</td>
+    <td >Italian</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td >2</td>
+    <td >Mexican</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td >3</td>
+    <td >Mediterranean</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td >4</td>
+    <td >American</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td >4</td>
+    <td >Chinese</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+</table>
+</div> <!-- browse -->
+
+<div id="insert" style="display: none">
+    <form id="addCuisine">
+        <legend><strong>Add Cuisine</strong></legend>
+          <fieldset class="fields">
+            <label> Name </label> <input type="text" name="name">
+          </fieldset>
+          <input class="btn" type="submit" id="addCuisine" value="Add a Cuisine">
+          <input class="btn" type="button" value="cancel" onclick="browse()">
+	</form> <!--add new -->
+</div><!-- insert -->
+
+<div id="updateRecord" style="display: none">
+  <form id="updateCuisine">
+      <legend><strong>Update Cuisine</strong></legend>
+          <fieldset class="fields">
+          <label>ID:</label>
+            <label> Name </label> <input type="text" name="name">
+    </fieldset>
+    <input class="btn" type="submit" id="UpdateSaveCuisine" value="Save Update Cuisine">
+          <input class="btn" type="button" value="cancel" onclick="browse()">
+  </form> 
+</div><!-- update -->
+
+<div id="deleteRecord" style="display: none">
+  <form id="deleteCuisine">
+      <legend><strong>Delete Cuisine</strong></legend>
+          <fieldset class="fields">
+          <p>Are you sure you wish to delete the following?</p>
+          <label>ID:</label>
+            <label> Name </label>
+            
+    </fieldset>
+    <input class="btn" type="submit" id="DeleteCuisine" value="Delete Cuisine">
+          <input class="btn" type="button" value="cancel" onclick="browse()">
+  </form> 
+</div><!-- delete -->
