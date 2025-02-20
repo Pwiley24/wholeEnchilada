@@ -422,4 +422,50 @@ input::file-selector-button:hover {
 }
 
 
+table {
+    border: none;
+    margin-top: 20px;
+    margin-left: 20px;
+}
 
+td, th {
+    padding: 5px;
+}
+
+table a {
+    text-decoration: none;
+    border: 1px solid #677100;
+    padding: 3px 7px;
+    color: white;
+    background-color: #677100;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.new-btn {
+    text-decoration: none;
+    border: 1px solid #677100;
+    padding: 3px 15px;
+    color: white;
+    background-color: #677100;
+    border-radius: 10px;
+}
+
+table .text-left {
+    text-align: left;
+}
+table .text-right {
+    text-align: right;
+}
+table .text-center {
+    text-align: center;
+}
+
+main {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+#browse h2, #insert h2, #updateRecord h2, #deleteRecord h2 {
+    margin-bottom: 20px;
+}

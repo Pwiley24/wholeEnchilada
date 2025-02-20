@@ -1,40 +1,40 @@
 <h1>Cuisines</h1>
 <div id="browse" style="display: block">
-<p><strong>Browse Cuisines</strong></p>
-<table border="1" cellpadding="5">
+<h3>Browse Cuisines</h3>
+<a class="new-btn" href="#" onclick="addRecord()">New</a>
+<table>
   <tr>
-    <th><a href="#" onclick="addRecord()">New</a></th>
-    <th></th>
-    <th>ID</th>
-    <th>Name</th>
+    {{!-- <th><a href="#" onclick="addRecord()">New</a></th> --}}
+    <th class="text-center">ID</th>
+    <th class="text-left">Name</th>
   </tr>
   <tr>
-    <td >1</td>
-    <td >Italian</td>
+    <td class="text-center">1</td>
+    <td class="text-left">Italian</td>
     <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
     <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
   </tr>
   <tr>
-    <td >2</td>
-    <td >Mexican</td>
+    <td class="text-center">2</td>
+    <td class="text-left">Mexican</td>
     <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
     <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
   </tr>
   <tr>
-    <td >3</td>
-    <td >Mediterranean</td>
+    <td class="text-center">3</td>
+    <td class="text-left">Mediterranean</td>
     <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
     <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
   </tr>
   <tr>
-    <td >4</td>
-    <td >American</td>
+    <td class="text-center">4</td>
+    <td class="text-left">American</td>
     <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
     <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
   </tr>
   <tr>
-    <td >4</td>
-    <td >Chinese</td>
+    <td class="text-center">5</td>
+    <td class="text-left">Chinese</td>
     <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
     <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
   </tr>
@@ -42,38 +42,61 @@
 </div> <!-- browse -->
 
 <div id="insert" style="display: none">
-    <form id="addCuisine">
-        <legend><strong>Add Cuisine</strong></legend>
-          <fieldset class="fields">
-            <label> Name </label> <input type="text" name="name">
-          </fieldset>
-          <input class="btn" type="submit" id="addCuisine" value="Add a Cuisine">
-          <input class="btn" type="button" value="cancel" onclick="browse()">
-	</form> <!--add new -->
+  <h3>Add Cuisine</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="addCuisine">
+      <div class="formInputContainer">
+        <label for="Name" class="formInputLabel adjustWidth">Name:</label>
+        <div class="formInputElement">
+          <input type="text" id="cuisineName" name="cuisineName" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="addCuisine" value="Add">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form>
+  </div>
 </div><!-- insert -->
 
 <div id="updateRecord" style="display: none">
-  <form id="updateCuisine">
-      <legend><strong>Update Cuisine</strong></legend>
-          <fieldset class="fields">
-          <label>ID:</label>
-            <label> Name </label> <input type="text" name="name">
-    </fieldset>
-    <input class="btn" type="submit" id="UpdateSaveCuisine" value="Save Update Cuisine">
-          <input class="btn" type="button" value="cancel" onclick="browse()">
-  </form> 
+  <h3>Update Cuisine</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="updateCuisine">
+      <div class="formInputContainer">
+        <label for="ID" class="formInputLabel adjustWidth">ID:</label>
+        <div class="formInputElement">
+          <input type="text" id="cuisineID" name="cuisineID" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Name" class="formInputLabel adjustWidth">Name:</label>
+        <div class="formInputElement">
+          <input type="text" id="cuisineName" name="cuisineName" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="UpdateSaveCuisine" value="Update">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form> 
+  </div>
 </div><!-- update -->
 
 <div id="deleteRecord" style="display: none">
-  <form id="deleteCuisine">
-      <legend><strong>Delete Cuisine</strong></legend>
-          <fieldset class="fields">
-          <p>Are you sure you wish to delete the following?</p>
-          <label>ID:</label>
-            <label> Name </label>
-            
-    </fieldset>
-    <input class="btn" type="submit" id="DeleteCuisine" value="Delete Cuisine">
-          <input class="btn" type="button" value="cancel" onclick="browse()">
-  </form> 
+  <h3>Delete Cuisine</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="deleteCuisine">
+      <div class="formInputContainer">
+        <label for="ID" class="formInputLabel adjustWidth">ID:</label>
+        <div class="formInputElement">
+          <input type="text" id="cuisineID" name="cuisineID" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Name" class="formInputLabel adjustWidth">Name:</label>
+        <div class="formInputElement">
+          <input type="text" id="cuisineName" name="cuisineName" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="DeleteCuisine" value="Delete">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form> 
+  </div>
 </div><!-- delete -->

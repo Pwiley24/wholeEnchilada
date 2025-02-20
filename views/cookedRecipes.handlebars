@@ -1,1 +1,180 @@
-<h1>We will display a table of all your cooked recipes!</h1>
+<h1>Cooked Recipes</h1>
+<div id="browse" style="display: block">
+<h3>Browse Cooked Recipes</h3>
+<a class="new-btn" href="#" onclick="addRecord()">New</a>
+<table>
+  <tr>
+    {{!-- <th><a href="#" onclick="addRecord()">New</a></th> --}}
+    <th class="text-center">Cooked ID</th>
+    <th class="text-left">Recipe</th>
+    <th class="text-center">Date</th>
+    <th class="text-left">Alteration(s)</th>
+    <th class="text-left">Note(s)</th>
+  </tr>
+  <tr>
+    <td class="text-center">1</td>
+    <td class="text-left">Orange Chicken</td>
+    <td class="text-center">12/29/2012</td>
+    <td class="text-left">Substitute chicken for tofu</td>
+    <td class="text-left">None</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td class="text-center">2</td>
+    <td class="text-left">Gyro</td>
+    <td class="text-center">9/12/2020</td>
+    <td class="text-left">None</td>
+    <td class="text-left">Cook for extra 5 minutes</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td class="text-center">3</td>
+    <td class="text-left">Breakfast Burrito</td>
+    <td class="text-center">3/2/2003</td>
+    <td class="text-left">None</td>
+    <td class="text-left">None</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td class="text-center">4</td>
+    <td class="text-left">BBQ Pizza</td>
+    <td class="text-center">6/17/2019</td>
+    <td class="text-left">Used a gluden free crust</td>
+    <td class="text-left">None</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+  <tr>
+    <td class="text-center">5</td>
+    <td class="text-left">Pesto Pasta</td>
+    <td class="text-center">4/10/2025</td>
+    <td class="text-left">None</td>
+    <td class="text-left">Add Parmesan for serving</td>
+    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+  </tr>
+</table>
+</div> <!-- browse -->
+
+<div id="insert" style="display: none">
+  <h3>Add Cooked Recipe</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="addCookedRecipe">
+      <div class="formInputContainer">
+        <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
+        <div class="formInputElement">
+          <select id="recipe" class="formInput">
+            <option value="1">Orange Chicken</option>
+            <option value="2">BBQ Pizza</option>
+            <option value="3">Pesto Pasta</option>
+            <option value="4">Gyro</option>
+            <option value="5">Breakfast Burrito</option>
+          </select>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Date" class="formInputLabel adjustWidth">Date:</label>
+        <div class="formInputElement">
+          <input type="date" id="date" name="date" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Alterations" class="formInputLabel adjustWidth">Alteration(s):</label>
+        <div class="formInputElement">
+          <input type="text" id="alterations" name="alterations" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Notes" class="formInputLabel adjustWidth">Note(s):</label>
+        <div class="formInputElement">
+          <input type="text" id="notes" name="notes" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="addCookedRecipe" value="Add">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form>
+  </div>
+</div><!-- insert -->
+
+<div id="updateRecord" style="display: none">
+  <h3>Update Cooked Recipe</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="updateCookedRecipe">
+      <div class="formInputContainer">
+        <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
+        <div class="formInputElement">
+          <select id="recipe" class="formInput">
+            <option value="1">Orange Chicken</option>
+            <option value="2">BBQ Pizza</option>
+            <option value="3">Pesto Pasta</option>
+            <option value="4">Gyro</option>
+            <option value="5">Breakfast Burrito</option>
+          </select>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Date" class="formInputLabel adjustWidth">Date:</label>
+        <div class="formInputElement">
+          <input type="date" id="date" name="date" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Alterations" class="formInputLabel adjustWidth">Alteration(s):</label>
+        <div class="formInputElement">
+          <input type="text" id="alterations" name="alterations" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Notes" class="formInputLabel adjustWidth">Note(s):</label>
+        <div class="formInputElement">
+          <input type="text" id="notes" name="notes" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="updateCookedRecipe" value="Update">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form>
+  </div>
+</div><!-- update -->
+
+<div id="deleteRecord" style="display: none">
+  <h3>Delete Cooked Recipe</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="deleteCookedRecipe">
+      <div class="formInputContainer">
+        <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
+        <div class="formInputElement">
+          <select id="recipe" class="formInput" disabled>
+            <option value="1">Orange Chicken</option>
+            <option value="2">BBQ Pizza</option>
+            <option value="3">Pesto Pasta</option>
+            <option value="4">Gyro</option>
+            <option value="5">Breakfast Burrito</option>
+          </select>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Date" class="formInputLabel adjustWidth">Date:</label>
+        <div class="formInputElement">
+          <input type="date" id="date" name="date" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Alterations" class="formInputLabel adjustWidth">Alteration(s):</label>
+        <div class="formInputElement">
+          <input type="text" id="alterations" name="alterations" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Notes" class="formInputLabel adjustWidth">Note(s):</label>
+        <div class="formInputElement">
+          <input type="text" id="notes" name="notes" class="formInput" disabled>
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="deleteCookedRecipe" value="Delete">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form>
+  </div>
+</div><!-- delete -->
