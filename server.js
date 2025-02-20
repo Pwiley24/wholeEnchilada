@@ -5,8 +5,7 @@ var fs = require('fs');
 var Handlebars = require('handlebars');
 
 var app = express();
-var port = process.env.PORT || 3000;
-
+var port = process.env.PORT || 3033;
 
 app.use(express.static(path.join(__dirname, 'static'))); // Serve static files from 'static'
 
