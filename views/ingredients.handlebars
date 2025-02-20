@@ -1,13 +1,13 @@
 <h1>Ingredients</h1>
 <div id="browse" style="display: block">
-<p>Browse Ingredients</p>
-<table border="1" cellpadding="5">
+<h3>Browse Ingredients</h3>
+<a class="new-btn" href="#" onclick="addRecord()">New</a>
+<table>
   <tr>
-    <th><a href="#" onclick="addRecord()">New</a></th>
-    <th></th>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Cost (per gram)</th>
+    {{!-- <th class="text-center"><a href="#" onclick="addRecord()">New</a></th> --}}
+    <th class="text-center">ID</th>
+    <th class="text-left">Name</th>
+    <th class="text-right">Cost (per gram)</th>
   </tr>
   <tr>
     <td>1</td>
@@ -48,40 +48,79 @@
 </div> <!-- browse -->
 
 <div id="insert" style="display: none">
-    <form id="addIngredient">
-        <legend><strong>Add Ingredient</strong></legend>
-          <fieldset class="fields">
-            <label> Name </label> <input type="text" name="recipe">
-            <label> Cost (per gram) </label> <input type="number" name="cost">
-          </fieldset>
-          <input class="btn" type="submit" id="addIngredient" value="Add Ingredient">
-          <input class="btn" type="button" value="cancel" onclick="browse()">
-	</form> <!--add new -->
+  <h3>Add Ingredient</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="addIngredient">
+      <div class="formInputContainer">
+        <label for="Name" class="formInputLabel">Name:</label>
+        <div class="formInputElement">
+          <input type="text" id="ingredientName" name="ingredientName" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Cost" class="formInputLabel">Cost (per gram):</label>
+        <div class="formInputElement">
+          <input type="number" id="ingredientCost" name="ingredientCost" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="addIngredient" value="Add">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form>
+  </div>
 </div><!-- insert -->
 
 <div id="updateRecord" style="display: none">
-  <form id="updateIngredient">
-      <legend><strong>Update Ingredient</strong></legend>
-          <fieldset class="fields">
-          <label> ID </label>
-          <label> Name </label> <input type="text" name="recipe">
-          <label> Cost (per gram) </label> <input type="number" name="costPerGram">
-    </fieldset>
-    <input class="btn" type="submit" id="UpdateSaveIngredient" value="Save Update Ingredient">
-          <input class="btn" type="button" value="cancel" onclick="browse()">
-  </form> 
+  <h3>Update Ingredient</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="updateIngredient">
+      <div class="formInputContainer">
+        <label for="ID" class="formInputLabel">ID:</label>
+        <div class="formInputElement">
+          <input type="text" id="ingredientID" name="ingredientID" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Name" class="formInputLabel">Name:</label>
+        <div class="formInputElement">
+          <input type="text" id="ingredientName" name="ingredientName" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Cost" class="formInputLabel">Cost (per gram):</label>
+        <div class="formInputElement">
+          <input type="number" id="ingredientCost" name="ingredientCost" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="UpdateSaveIngredient" value="Update">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form> 
+  </div>
 </div><!-- update -->
 
-<div id="deleteIngredient" style="display: none">
-  <form id="deleteIngredient">
-      <legend><strong>Delete Ingredient</strong></legend>
-          <fieldset class="fields">
-          <p>Are you sure you wish to delete the following?</p>
-          <label> ID: </label>
-            <label> Name </label>
-            <label> Cost (per gram) </label>
-    </fieldset>
-    <input class="btn" type="submit" id="DeleteIngredient" value="DeleteIngredient">
-          <input class="btn" type="button" value="cancel" onclick="browse()">
-  </form> 
+<div id="deleteRecord" style="display: none">
+  <h3>Delete Ingredient</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="deleteIngredient">
+      <div class="formInputContainer">
+        <label for="ID" class="formInputLabel">ID:</label>
+        <div class="formInputElement">
+          <input type="text" id="ingredientID" name="ingredientID" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Name" class="formInputLabel">Name:</label>
+        <div class="formInputElement">
+          <input type="text" id="ingredientName" name="ingredientName" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Cost" class="formInputLabel">Cost (per gram):</label>
+        <div class="formInputElement">
+          <input type="number" id="ingredientCost" name="ingredientCost" class="formInput" disabled>
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="UpdateSaveIngredient" value="Delete">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form> 
+  </div>
 </div><!-- delete -->
