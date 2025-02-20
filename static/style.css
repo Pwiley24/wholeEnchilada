@@ -30,24 +30,22 @@ p {
     letter-spacing: -0.26px;
 }
 
-#add-recipe-button{
-    margin:20px;
-    position:fixed;
-    right:0;
-    bottom:0;
-    background-color: #984511;
+
+
+.filter-buttons {
+    margin:10px;
+    text-decoration: none;
     color: white;
-    border-radius: 100%;
-    font-size: 50px;
-    width:65px;
-    border-style:none;
+    background-color: #677100;
+    border-radius: 10px;
+    border-color:#677100;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
 }
 
-#add-recipe-button:hover{
-    font-size:60px;
-    width:75px;
+.filter-buttons:hover{
+    width:auto;
     cursor:pointer;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
 }
 
 #reviews-info a{
@@ -188,7 +186,7 @@ p {
 #recipes-filter-container {
     background-color: #3D4547;
     min-width: 200px;
-    height: 320px;
+    height: 350px;
     margin: 10px 10px auto 10px;
     border-radius: 5px;
     padding: 20px;
@@ -201,7 +199,7 @@ p {
 
 .filter-input-container {
     width: 100%;
-    margin: 20px 0;
+    margin: 10px 0;
     display: flex;
     align-items: center;
     color:#ECE3DA;
@@ -245,6 +243,7 @@ p {
     display: flex;
     justify-content: center;
 }
+
 
 
 /* Hidden Class */
