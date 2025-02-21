@@ -270,7 +270,7 @@ p {
 }
 
 /* Navbar */
-ul {
+.navbar ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -295,12 +295,12 @@ ul {
     max-width: 250px; 
 }
 
-li {
+.navbar li {
     float: none;
     margin: 0; 
 }
 
-li a {
+.navbar li a {
     display: block;
     color: white;
     text-align: center;
@@ -308,15 +308,15 @@ li a {
     text-decoration: none;
 }
 
-li a:hover {
+.navbar li a:hover {
     background-color: #4f5600;
     height: 100%;
 }
 
-ul {
+.navbar ul {
     justify-content: space-between;
 }
-ul .navbar-items {
+.navbar ul .navbar-items {
     display: flex;
     gap: 10px; 
     margin-right: 20px; 
@@ -467,4 +467,11 @@ main {
 
 #browse h2, #insert h2, #updateRecord h2, #deleteRecord h2 {
     margin-bottom: 20px;
+}
+
+.nomargin {
+    margin: 0px;
+}
+.nomargin-bottom {
+    margin-bottom: 0px;
 }
