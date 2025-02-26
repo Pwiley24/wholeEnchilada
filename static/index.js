@@ -31,87 +31,58 @@ function insertNewRecipe(){
  * if the recipe passes the filters and should be displayed and false otherwise.
  */
 function recipePassesFilters(recipe, filters) {
-    
     var passesText = true;
+    console.log("recipe descrip: ", recipe.text);
     if (filters.text) {
-        var recipeName = recipe.name.toLowerCase(); //The name will be from the database name
         var filterText = filters.text.toLowerCase();
-        if (recipeName.indexOf(filterText) === -1) {
-            console.log("filter text doesn't appear")
+        if (recipe.name.indexOf(filterText) === -1 && recipe.text.indexOf(filterText) === -1 ) {
             passesText = false;
-        }else{
-            console.log("filter text appears")
         }
     }
+
 
     var passesCuisine = true;
+    console.log("filter cuisine: ", filters.cuisine);
+    console.log("recipe cuisine ", recipe.cuisine);
     if (filters.cuisine) {
-        var recipeCuisine = recipe.cuisine.toLowerCase(); //The cuisine will be from the database cuisine associated
-        var filterText = filters.cuisine.toLowerCase();
-        if (recipeCuisine.indexOf(filterText) === -1) {
-            console.log("filter text doesn't appear")
+        if (recipe.cuisine.indexOf(filters.cuisine) === -1) {
             passesCuisine = false;
-        }else{
-            console.log("filter text appears")
+            console.log("fails cuisine")
         }
     }
 
+    // Check rating filters --> to be adjusted later
     var passesRating1 = true;
     if (filters.rating1.checked) {
-        var reviewNum = 0 //this will be changed to represent the number of reviews for the associated recipe
-        for (var i = 0; i < reviewNum; i++){
-            var recipeRating = recipe.review(); //the rating will be from the database review associated
-            if (recipeRating <= 0 && recipeRating >= 1){
-                passesRating1 = false
-            }
-        }
+        passesRating1 = true; 
     }
 
     var passesRating2 = true;
     if (filters.rating2.checked) {
-        var reviewNum = 0 //this will be changed to represent the number of reviews for the associated recipe
-        for (var i = 0; i < reviewNum; i++){
-            var recipeRating = recipe.review(); //the rating will be from the database review associated
-            if (recipeRating <= 1 && recipeRating >= 2){
-                passesRating2 = false
-            }
-        }
+        passesRating2 = true; 
     }
 
     var passesRating3 = true;
     if (filters.rating3.checked) {
-        var reviewNum = 0 //this will be changed to represent the number of reviews for the associated recipe
-        for (var i = 0; i < reviewNum; i++){
-            var recipeRating = recipe.review(); //the rating will be from the database review associated
-            if (recipeRating <= 2 && recipeRating >= 3){
-                passesRating3 = false
-            }
-        }
+        passesRating3 = true; 
     }
 
     var passesRating4 = true;
     if (filters.rating4.checked) {
-        var reviewNum = 0 //this will be changed to represent the number of reviews for the associated recipe
-        for (var i = 0; i < reviewNum; i++){
-            var recipeRating = recipe.review(); //the rating will be from the database review associated
-            if (recipeRating <= 3 && recipeRating >= 4){
-                passesRating4 = false
-            }
-        }
+        passesRating4 = true; 
     }
 
     var passesRating5 = true;
     if (filters.rating5.checked) {
-        var reviewNum = 0 //this will be changed to represent the number of reviews for the associated recipe
-        for (var i = 0; i < reviewNum; i++){
-            var recipeRating = recipe.review(); //the rating will be from the database review associated
-            if (recipeRating <= 4 && recipeRating >= 5){
-                passesRating5 = false
-            }
-        }
+        passesRating5 = true; 
     }
+    console.log("----------------------------");
+    console.log("cuisine pass: ", passesCuisine);
+    console.log("text passes: ", passesText);
+    console.log("----------------------------");
 
-    return passesText, passesCuisine, passesRating1, passesRating2, passesRating3, passesRating4, passesRating5;
+    var filterVals = [passesText, passesCuisine, passesRating1, passesRating2, passesRating3, passesRating4, passesRating5]
+    return filterVals;
 }
 
 /*
@@ -122,40 +93,60 @@ function recipePassesFilters(recipe, filters) {
  * removed from the DOM.
  */
 function doFilterUpdate() {
-    console.log("Doing filter update")
-    //Grab values of filters from user inputs.
+    console.log("Doing filter update");
+
+    // Grab values of filters from user inputs
     var filters = {
         text: document.getElementById("filter-text").value.trim(),
-        cuisine: document.getElementById("filter-cuisine").value,
+        cuisine: document.getElementById("filter-cuisine").value.toLowerCase(),
         rating1: document.getElementById("filter-1"),
         rating2: document.getElementById("filter-2"),
         rating3: document.getElementById("filter-3"),
         rating4: document.getElementById("filter-4"),
         rating5: document.getElementById("filter-5")
-    }
-    
-    var recipeContainer = document.getElementById("recipes-flex")
-    var recipeChildren = recipeContainer.children
+    };
 
-    // Reset recipe elements back to normal by making them visible again
-    for (var j = 0; j < recipeChildren.length;j++) {
-        if (recipeChildren[j].classList.contains("hidden")) {
-            recipeChildren[j].classList.remove("hidden")
-        }
-    }
+    // Select all rows in the recipe table body (excluding the header)
+    var recipeContainer = document.getElementById("recipe-container");
+    var recipeRows = recipeContainer.getElementsByTagName("tr");
 
-    /*
-     * "Remove" all "recipe" elements by hiding them.
-     */ 
-    var i = 0
-    allRecipes.forEach(function (recipe) {
-        if (!(recipePassesFilters(recipe, filters))) {
-            recipeChildren[i].classList.add("hidden")
+    // Reset all rows to visible before applying new filters
+    Array.from(recipeRows).forEach(row => row.classList.remove("hidden"));
+
+    // Iterate over each row and apply the filters
+    Array.from(recipeRows).forEach(row => {
+        // Skip the header row (which contains <th> elements)
+        if (row.querySelector('th')) return;
+
+        // Get the content of each column (adjust the index based on your table's structure)
+        var recipeName = row.cells[1].textContent.toLowerCase(); // Recipe Name in the second column
+        var recipeDescription = row.cells[2].textContent.toLowerCase(); // Description in the third column
+        var cuisineName = row.cells[3].textContent.toLowerCase(); // Cuisine Name in the fourth column
+
+        // Use recipePassesFilters function to check if this recipe passes the filters
+        var recipe = {
+            name: recipeName,
+            text: recipeDescription,
+            cuisine: cuisineName
+        };
+
+        // Apply the filter check
+        var passesFilters = recipePassesFilters(recipe, filters);
+
+        // If the recipe passes all filters, keep it visible, otherwise hide it
+        console.log("text: ", passesFilters[0]);
+        console.log("cuisine: ", passesFilters[1]);
+        if (!(passesFilters[0]) || !(passesFilters[1])) {
+            console.log("all filters failed");
+            row.classList.add("hidden");
+        } else {
+            row.classList.remove("hidden");
+            console.log("all filters passed");
         }
-        i++
-    })
-    
+    });
 }
+
+
 
 function showModal(){
     console.log("unhiding")
@@ -176,13 +167,7 @@ function hideModal(){
 }
 
 
-var allRecipes = []
-var recipeElems = document.getElementsByClassName('recipe-post')
 
-for (var i = 0; i < recipeElems.length; i++) {
-    console.log("Inspecting recipe element: ", recipeElems[i]);
-    allRecipes.push(parserecipeElem(recipeElems[i]));
-}
 
 //Check if the filter button exists
 var filterUpdateButton = document.getElementById("filter-update-button");

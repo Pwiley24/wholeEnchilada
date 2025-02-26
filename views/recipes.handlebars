@@ -1,6 +1,10 @@
-    <script>
+    {{!-- <script>
         var cuisinesList = 
-    </script>
+
+       
+
+
+    </script> --}}
     
     <div>
         <div class="recipes-all-content">
@@ -20,7 +24,7 @@
                         <select id="filter-cuisine" class="filter-input" name="filter-cuisine">
                             <option selected value="">Any</option>
                             {{#each cuisineList}}
-                            <option value="cuisine_ID">{{name}}</option>
+                            <option value={{name}}>{{name}}</option>
                             {{/each}}
                         </select>
                     </div>
@@ -74,28 +78,31 @@
             
                 <div id="browse" style="display: block"> {{!-- this will be something to implement with our database --}}
                     <table>
-                        <tr>
-                            {{!-- <th><a href="#" onclick="addRecord()">New</a></th> --}}
-                            <th class="text-center">Recipe ID</th>
-                            <th class="text-left">Recipe Name</th>
-                            <th class="text-left">Description</th>
-                            <th class="text-left">Cuisine ID</th>
-                        </tr>
-                        {{#each recipes}}
-                        <tr>
-                            <td class="text-center">{{recipe_ID}}</td>
-                            <td class="text-left">{{recipe_name}}</td>
-                            <td class="text-left">{{recipe_description}}</td>
-                            <td class="text-left">{{cuisine_name}}</td>
-                            <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-                            <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-                        </tr>
-                        {{/each}}
+                        <tbody id="recipe-container">
+                            <tr>
+                                <th class="text-center">Recipe ID</th>
+                                <th class="text-left">Recipe Name</th>
+                                <th class="text-left">Description</th>
+                                <th class="text-left">Cuisine ID</th>
+                            </tr>
+                            {{#each recipes}}
+                            <tr>
+                                <td class="text-center">{{recipe_ID}}</td>
+                                <td class="text-left">{{recipe_name}}</td>
+                                <td class="text-left">{{recipe_description}}</td>
+                                <td class="text-left" id ="filter-cuisine">{{cuisine_name}}</td>
+                                <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+                                <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
                     </table>
                     {{#each recipesData}}
                         {{> single-recipe}}
                     {{/each}}
                 </div><!-- browse -->
+
+
                 <div id="insert" style="display: none"></div>
                 <div id="updateRecord" style="display: none">
                     <h3>Update Recipe</h3>
@@ -118,7 +125,7 @@
                             <div class="formInputElement">
                                 <select id="cuisine" class="formInput">
                                     {{#each cuisineList}}
-                                    <option value="cuisine_ID">{{name}}</option>
+                                    <option id="newCuisine" value="cuisine_ID">{{name}}</option>
                                     {{/each}}
                                 </select>
                             </div>

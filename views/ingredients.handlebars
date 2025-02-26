@@ -9,43 +9,16 @@
     <th class="text-left">Name</th>
     <th class="text-right">Cost (per gram)</th>
   </tr>
-  <tr>
-    <td>1</td>
-    <td>Chicken</td>
-    <td>0.00904761904</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Olive Oil</td>
-    <td>0.0196</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Egg</td>
-    <td>0.5</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>Avocado</td>
-    <td>0.00275</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Pita Bread</td>
-    <td>0.02645549304</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-</table>
-</div> <!-- browse -->
+  {{#each ingredients}}
+    <tr>
+      <td>{{this.ingredient_ID}}</td>
+      <td>{{this.name}}</td>
+      <td>{{this.cost_per_gram}}</td>
+      <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+      <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+    </tr>
+  {{/each}}
+</table><!-- browse -->
 
 <div id="insert" style="display: none">
   <h3>Add Ingredient</h3>
