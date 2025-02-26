@@ -1,3 +1,7 @@
+    <script>
+        var cuisinesList = 
+    </script>
+    
     <div>
         <div class="recipes-all-content">
             <div id="recipes-filter-container">
@@ -15,12 +19,9 @@
                     <div class="filter-input-element">
                         <select id="filter-cuisine" class="filter-input" name="filter-cuisine">
                             <option selected value="">Any</option>
-                            <option>American</option>
-                            <option>Mexican</option>
-                            <option>Italian</option>
-                            <option>Chinese</option>
-                            <option>French</option>
-                            <option>Japanese</option>
+                            {{#each cuisineList}}
+                            <option value="cuisine_ID">{{name}}</option>
+                            {{/each}}
                         </select>
                     </div>
                 </div>
@@ -80,46 +81,16 @@
                             <th class="text-left">Description</th>
                             <th class="text-left">Cuisine ID</th>
                         </tr>
+                        {{#each recipes}}
                         <tr>
-                            <td class="text-center">1</td>
-                            <td class="text-left">Orange Chicken</td>
-                            <td class="text-left">Chicken in orange sauce served with rice and broccoli</td>
-                            <td class="text-left">Chinese</td>
+                            <td class="text-center">{{recipe_ID}}</td>
+                            <td class="text-left">{{recipe_name}}</td>
+                            <td class="text-left">{{recipe_description}}</td>
+                            <td class="text-left">{{cuisine_name}}</td>
                             <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
                             <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
                         </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td class="text-left">BBQ Pizza</td>
-                            <td class="text-left">Pizza with bbq sauce and chicken</td>
-                            <td class="text-left">American</td>
-                            <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-                            <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td class="text-left">Pesto Pasta</td>
-                            <td class="text-left">Pasta with pesto and chicken</td>
-                            <td class="text-left">Italian</td>
-                            <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-                            <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">4</td>
-                            <td class="text-left">Gyro</td>
-                            <td class="text-left">Lamb, tomato, spinach, and feta combined inside a pita wrap</td>
-                            <td class="text-left">Mediterranean</td>
-                            <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-                            <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">5</td>
-                            <td class="text-left">Breakfast Burrito</td>
-                            <td class="text-left">Egg, cheese, salsa, canadian bacon, avacado wrapped inside a tortilla</td>
-                            <td class="text-left">Mexican</td>
-                            <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-                            <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-                        </tr>
+                        {{/each}}
                     </table>
                     {{#each recipesData}}
                         {{> single-recipe}}
@@ -146,11 +117,9 @@
                             <label for="Cuisine" class="formInputLabel adjustWidth">Cuisine:</label>
                             <div class="formInputElement">
                                 <select id="cuisine" class="formInput">
-                                    <option value="1">Italian</option>
-                                    <option value="2">Mexican</option>
-                                    <option value="3">Mediterranean</option>
-                                    <option value="4">American</option>
-                                    <option value="5">Chinese</option>
+                                    {{#each cuisineList}}
+                                    <option value="cuisine_ID">{{name}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
