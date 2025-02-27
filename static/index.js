@@ -2,57 +2,79 @@
  * Function to insert a new recipe into the database. Takes
  * in the elements of a new recipe element.
  */
-function insertNewRecipe(){
-    hideModal()
-    var recipe_ID = 1; //this will be replaced by DB
-    var name = document.getElementById("modal-name").value;
-    var cuisine_ID = document.getElementById("modal-cuisine").value;
-    var desc = document.getElementById("modal-description").value; 
+function insertNewRecipe() {
+    var recipe_name = document.getElementById('recipe-name').value;
+    var description = document.getElementById('modal-description').value;
+    var selectElement = document.getElementById('modal-cuisine');
+    var cuisine_ID = selectElement.value;
 
+    console.log("cuisine id: ", cuisine_ID);
+    var ingredients = getIngredientData();
 
-    var data = { recipe_ID, name, cuisine_ID, instructions, ingredients };
-
-    var recipeContainer = document.getElementById("recipe-flex");
-    var html = Handlebars.templates["singleRecipe"](data);
-    recipeContainer.insertAdjacentHTML("beforeend", html);
-
-    console.log("Recipe added:", data);
-}
-
-function addIngredientToRecipeFunc() {
-    console.log("here");
-    //add ingredient to recipe
-    var ingredientName = document.getElementById("modal-ingredient").value;
-    var ingredientQty = document.querySelector("input[name='ingredientQty[]']").value;
-    var ingredientUOM = document.querySelector("select[name='ingredientUOM[]']").value;
-    
-    var ingredientData = {
-        name: ingredientName,
-        qty: ingredientQty,
-        uom: ingredientUOM
+    const recipeData = {
+        recipe_name: recipe_name,
+        description: description,
+        cuisine_ID: cuisine_ID,
+        ingredients: ingredients
     };
-
-    fetch('/addIncredientToRecipe', {
+    fetch('/addRecipeWithIngredients', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(ingredientData)
+        body: JSON.stringify(recipeData)
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
             console.log('Ingredient added successfully!');
-            //clear the ingredient list
         } else {
             console.error('Error adding ingredient:', data.message);
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error HERE:', error);
     });   
-    
 }
+
+// Function to add a new row for ingredients
+function addIngredientDOM(){
+    const container = document.getElementById('ingredients-container');
+    const ingredientGroup = document.querySelector('.ingredient-group'); 
+
+
+    const newIngredientGroup = ingredientGroup.cloneNode(true);
+
+    //reset input values for ingredient row
+    newIngredientGroup.querySelector('input[type="number"]').value = ''; 
+    newIngredientGroup.querySelector('select[name="ingredientUOM[]"]').value = 'g'; 
+    newIngredientGroup.querySelector('select[name="recipe-ingredient"]').value = ''; 
+
+    container.appendChild(newIngredientGroup);
+}
+
+
+// Function to gather all ingredient data
+function getIngredientData() {
+    const ingredients = [];
+    const ingredientElements = document.querySelectorAll('.ingredient-group'); 
+    console.log("elems ", ingredientElements);
+    ingredientElements.forEach(element => {
+        const ingredient_ID = element.querySelector('.ingredient-select').value; 
+        const ingredient_qty = element.querySelector('input[type="number"]').value; 
+        const ingredient_uom = element.querySelector('select[name="ingredientUOM[]"]').value; 
+
+        ingredients.push({
+            ingredient_ID: ingredient_ID,
+            ingredient_qty: ingredient_qty,
+            ingredient_uom: ingredient_uom
+        });
+    });
+
+    console.log('Ingredients:', ingredients);
+    return ingredients;
+}
+
 
 /*
  * A function to apply the current filters to a specific recipe.  Returns true
@@ -176,6 +198,9 @@ function doFilterUpdate() {
 
 
 
+
+
+
 function showModal(){
     console.log("unhiding")
     var modalBackdrop = document.getElementById("modal-backdrop");
@@ -194,9 +219,6 @@ function hideModal(){
     modal.classList.add("hidden");
 }
 
-
-
-
 //Check if the filter button exists
 var filterUpdateButton = document.getElementById("filter-update-button");
 
@@ -214,15 +236,14 @@ if (addButton) {
     });
 }
 
-//check if the add ingredient to recipe button exists
-var addIngredientToRecipe = document.getElementById("add-ingredient")
-    if (addIngredientToRecipe) {
-        addIngredientToRecipe.addEventListener("click", function() {
-            addIngredientToRecipeFunc()
-        });
-    }
-
-
+//check if the insert ingredient on recipe page exists
+var insertIngredient = document.getElementById('add-ingredient');
+if (insertIngredient){
+    insertIngredient.addEventListener('click', function() {
+        addIngredientDOM();
+    });
+}
+    
 //check if the modal cancel button exists
 var modalCancel = document.getElementById("modal-cancel");
 var modalClose = document.getElementById("modal-close")
