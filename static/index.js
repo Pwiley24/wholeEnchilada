@@ -5,22 +5,11 @@
 function insertNewRecipe() {
     var recipe_name = document.getElementById('recipe-name').value;
     var description = document.getElementById('modal-description').value;
-    var cuisine_ID = document.getElementById('cuisine-id').value;
+    var selectElement = document.getElementById('modal-cuisine');
+    var cuisine_ID = selectElement.value;
 
-    console.log("description: ", description);
-    var ingredients = [];
-    var ingredientElements = document.querySelectorAll('.ingredient');
-    ingredientElements.forEach(element => {
-        var ingredient_ID = element.querySelector('.ingredient-select').value;
-        var ingredient_qty = element.querySelector('.ingredient-qty').value;
-        var ingredient_uom = element.querySelector('.ingredient-uom').value;
-
-        ingredients.push({
-            ingredient_ID: ingredient_ID,
-            ingredient_qty: ingredient_qty,
-            ingredient_uom: ingredient_uom
-        });
-    });
+    console.log("cuisine id: ", cuisine_ID);
+    var ingredients = getIngredientData();
 
     const recipeData = {
         recipe_name: recipe_name,
@@ -47,6 +36,45 @@ function insertNewRecipe() {
         console.error('Error HERE:', error);
     });   
 }
+
+// Function to add a new row for ingredients
+function addIngredientDOM(){
+    const container = document.getElementById('ingredients-container');
+    const ingredientGroup = document.querySelector('.ingredient-group'); 
+
+
+    const newIngredientGroup = ingredientGroup.cloneNode(true);
+
+    //reset input values for ingredient row
+    newIngredientGroup.querySelector('input[type="number"]').value = ''; 
+    newIngredientGroup.querySelector('select[name="ingredientUOM[]"]').value = 'g'; 
+    newIngredientGroup.querySelector('select[name="recipe-ingredient"]').value = ''; 
+
+    container.appendChild(newIngredientGroup);
+}
+
+
+// Function to gather all ingredient data
+function getIngredientData() {
+    const ingredients = [];
+    const ingredientElements = document.querySelectorAll('.ingredient-group'); 
+    console.log("elems ", ingredientElements);
+    ingredientElements.forEach(element => {
+        const ingredient_ID = element.querySelector('.ingredient-select').value; 
+        const ingredient_qty = element.querySelector('input[type="number"]').value; 
+        const ingredient_uom = element.querySelector('select[name="ingredientUOM[]"]').value; 
+
+        ingredients.push({
+            ingredient_ID: ingredient_ID,
+            ingredient_qty: ingredient_qty,
+            ingredient_uom: ingredient_uom
+        });
+    });
+
+    console.log('Ingredients:', ingredients);
+    return ingredients;
+}
+
 
 /*
  * A function to apply the current filters to a specific recipe.  Returns true
@@ -208,6 +236,13 @@ if (addButton) {
     });
 }
 
+//check if the insert ingredient on recipe page exists
+var insertIngredient = document.getElementById('add-ingredient');
+if (insertIngredient){
+    insertIngredient.addEventListener('click', function() {
+        addIngredientDOM();
+    });
+}
     
 //check if the modal cancel button exists
 var modalCancel = document.getElementById("modal-cancel");

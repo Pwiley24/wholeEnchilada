@@ -5,7 +5,7 @@ var express = require('express');
 var exphbs = require('express-handlebars');
 var fs = require('fs');
 var Handlebars = require('handlebars');
-var port = process.env.PORT || 3033;
+var port = process.env.PORT || 3043;
 
 
 const mysql = require('mysql2');
@@ -120,6 +120,7 @@ app.post('/addRecipeWithIngredients', function(req, res) {
     console.log("name ", recipe_name);
     console.log("desc ", description);
     console.log("name ", recipe_name);
+    console.log("ingredients: ", ingredients);
     pool.query(
         "INSERT INTO Recipes (name, description, cuisine_ID) VALUES (?, ?, ?)",
         [recipe_name, description, cuisine_ID],
@@ -147,7 +148,7 @@ app.post('/addRecipeWithIngredients', function(req, res) {
 
                 return new Promise((resolve, reject) => {
                     pool.query(
-                        "INSERT INTO IngredientsOfRecipes (recipe_ID, ingredient_ID, ingredient_qty, qty_to_gram, ingredient_uom) VALUES (?, ?, ?, ?, ?)",
+                        "INSERT INTO IngredientsOfRecipes (recipe_ID, ingredient_ID, ingredient_qty, ingredient_qty_to_gram, ingredient_qty_display_uom) VALUES (?, ?, ?, ?, ?)",
                         [recipe_ID, ingredient_ID, ingredient_qty, qty_to_gram, ingredient_uom],
                         (err, results) => {
                             if (err) {

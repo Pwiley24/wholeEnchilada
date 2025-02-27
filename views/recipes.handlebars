@@ -184,14 +184,14 @@
             <form id="recipe-form">
                 <div class="recipe-input-element">
                     <label for="modal-name" class="modal-label">Recipe Name</label>
-                    <input type="text" id="modal-name" name="recipe-name" required>
+                    <input type="text" id="recipe-name" name="recipe-name" required>
                 </div>
 
                 <div class="recipe-input-element">
                     <label for="modal-cuisine" class="modal-label">Cuisine</label>
                     <select id="modal-cuisine" name="recipe-cuisine" required>
                         {{#each cuisineList}}
-                            <option value="cuisine_ID">{{name}}</option>
+                            <option value={{cuisine_ID}}>{{name}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -199,9 +199,9 @@
                 <div id="ingredients-container">
                     <label class="modal-label">Ingredients</label>
                     <div class="recipe-input-element ingredient-group">
-                        <select id="modal-ingredient" name="recipe-ingredient">
+                        <select class="ingredient-select" id="modal-ingredient" name="recipe-ingredient">
                         {{#each ingredientList}}
-                            <option value="ingredient_ID">{{name}}</option>
+                            <option value={{ingredient_ID}}>{{name}}</option>
                         {{/each}}
                         </select>
                         <input type="number" name="ingredientQty[]" placeholder="Quantity">
