@@ -89,7 +89,8 @@ app.get('/getRecipeById/:recipeid', function(req, res, next) {
         pool.query("SELECT ir.recipe_ID, ir.ingredient_ID, r.name AS 'recipe_name', i.name AS 'ingredient_name', ingredient_qty, ingredient_qty_display_uom, ingredient_qty_to_gram  FROM IngredientsOfRecipes ir JOIN Recipes r ON ir.recipe_ID = r.recipe_ID JOIN Ingredients i ON ir.ingredient_ID = i.ingredient_ID WHERE ir.recipe_ID = ?", [req.params.recipeid], (err, results) => {
             if (err) throw err;
             res.status(200).send(results);
-        })
+        });
+        connection.release();
     });
 });
 
