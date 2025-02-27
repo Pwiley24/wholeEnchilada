@@ -1,10 +1,33 @@
-    {{!-- <script>
-        var cuisinesList = 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    {{!-- <script src="../js/delete_recipe.js"></script> --}}
+    <script>
+        function deleteRecipe(recipeID) {
+            var link = '/deleteRecipe/';
+            link += recipeID;
+            $.ajax({
+                url: link,
+                type: 'DELETE',
+                success: function(result) {
+                    deleteRow(recipeID);
+                }
+            })
+        }
 
-       
+        function deleteRow(recipeID) {
+            var table = document.getElementById("recipe-table");
+            for (var i = 0; row = table.rows[i]; i++) {
+                if (table.rows[i].getAttribute("data-value") == recipeID) {
+                    table.deleteRow(i);
+                    break;
+                }
+            }
+        }
 
-
-    </script> --}}
+        function getRecipe(recipeID, recipeName) {
+            let selectedRecipe = recipeName;
+            document.getElementById("recipeDetails").style.display = "block";
+        }
+    </script>
     
     <div>
         <div class="recipes-all-content">
@@ -77,7 +100,7 @@
                 </div>
             
                 <div id="browse" style="display: block"> {{!-- this will be something to implement with our database --}}
-                    <table>
+                    <table id="recipe-table">
                         <tbody id="recipe-container">
                             <tr>
                                 <th class="text-center">Recipe ID</th>
@@ -86,24 +109,27 @@
                                 <th class="text-left">Cuisine ID</th>
                             </tr>
                             {{#each recipes}}
-                            <tr>
+                            <tr data-value="{{recipe_ID}}">
                                 <td class="text-center">{{recipe_ID}}</td>
-                                <td class="text-left">{{recipe_name}}</td>
+                                <td><a href="#" onclick="getRecipe({{recipe_ID}}, '{{recipe_name}}')">{{recipe_name}}</a></td>
                                 <td class="text-left">{{recipe_description}}</td>
                                 <td class="text-left" id ="filter-cuisine">{{cuisine_name}}</td>
                                 <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-                                <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+                                <td><a href="#" onclick="deleteRecipe({{recipe_ID}})">Delete</a></td>
                             </tr>
                             {{/each}}
                         </tbody>
                     </table>
-                    {{#each recipesData}}
+                    {{!-- {{#each recipesData}}
                         {{> single-recipe}}
-                    {{/each}}
+                    {{/each}} --}}
                 </div><!-- browse -->
 
 
                 <div id="insert" style="display: none"></div>
+                <div id="recipeDetails" style="display: none">
+                    <h3>{{selectedRecipe}}</h3>
+                </div>
                 <div id="updateRecord" style="display: none">
                     <h3>Update Recipe</h3>
                     <div class="formDiv">
