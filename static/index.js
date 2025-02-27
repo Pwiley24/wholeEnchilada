@@ -9,13 +9,6 @@ function insertNewRecipe(){
     var cuisine_ID = document.getElementById("modal-cuisine").value;
     var desc = document.getElementById("modal-description").value; 
 
-    var ingredients = [];
-    document.querySelectorAll("#ingredients-container .ingredient-group").forEach(ingredient => {
-        var name = ingredient.querySelector("input[name='ingredientName[]']").value;
-        var qty = ingredient.querySelector("input[name='ingredientQty[]']").value;
-        var uom = ingredient.querySelector("select[name='ingredientUOM[]']").value;
-        ingredients.push({ name, qty, uom });
-    });
 
     var data = { recipe_ID, name, cuisine_ID, instructions, ingredients };
 
@@ -24,6 +17,41 @@ function insertNewRecipe(){
     recipeContainer.insertAdjacentHTML("beforeend", html);
 
     console.log("Recipe added:", data);
+}
+
+function addIngredientToRecipeFunc() {
+    console.log("here");
+    //add ingredient to recipe
+    var ingredientName = document.getElementById("modal-ingredient").value;
+    var ingredientQty = document.querySelector("input[name='ingredientQty[]']").value;
+    var ingredientUOM = document.querySelector("select[name='ingredientUOM[]']").value;
+    
+    var ingredientData = {
+        name: ingredientName,
+        qty: ingredientQty,
+        uom: ingredientUOM
+    };
+
+    fetch('/addIncredientToRecipe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ingredientData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Ingredient added successfully!');
+            //clear the ingredient list
+        } else {
+            console.error('Error adding ingredient:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });   
+    
 }
 
 /*
@@ -186,11 +214,25 @@ if (addButton) {
     });
 }
 
+//check if the add ingredient to recipe button exists
+var addIngredientToRecipe = document.getElementById("add-ingredient")
+    if (addIngredientToRecipe) {
+        addIngredientToRecipe.addEventListener("click", function() {
+            addIngredientToRecipeFunc()
+        });
+    }
+
 
 //check if the modal cancel button exists
 var modalCancel = document.getElementById("modal-cancel");
+var modalClose = document.getElementById("modal-close")
 if (modalCancel) {
     modalCancel.addEventListener("click", function(){
+        hideModal()
+    })
+}
+if (modalClose) {
+    modalClose.addEventListener("click", function(){
         hideModal()
     })
 }
@@ -202,4 +244,6 @@ if (modalAddButton) {
         insertNewRecipe()
     })
 }
+
+
 

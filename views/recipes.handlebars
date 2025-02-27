@@ -125,7 +125,7 @@
                             <div class="formInputElement">
                                 <select id="cuisine" class="formInput">
                                     {{#each cuisineList}}
-                                    <option id="newCuisine" value="cuisine_ID">{{name}}</option>
+                                    <option value="cuisine_ID">{{name}}</option>
                                     {{/each}}
                                 </select>
                             </div>
@@ -156,11 +156,9 @@
                             <label for="Cuisine" class="formInputLabel adjustWidth">Cuisine:</label>
                             <div class="formInputElement">
                                 <select id="cuisine" class="formInput" disabled>
-                                    <option value="1">Italian</option>
-                                    <option value="2">Mexican</option>
-                                    <option value="3">Mediterranean</option>
-                                    <option value="4">American</option>
-                                    <option value="5">Chinese</option>
+                                    {{#each cuisineList}}
+                                        <option value="cuisine_ID">{{name}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -174,8 +172,6 @@
     </div>
 
 
-    {{!-- This modal may be used to implement adding new recipes. Need more info on database incorporation to 
-    do this properly. --}}
     <div id="modal-backdrop" class="hidden"></div>
         <div id="add-recipe-modal" class="hidden">
             <div class="modal-dialog">
@@ -194,21 +190,21 @@
                 <div class="recipe-input-element">
                     <label for="modal-cuisine" class="modal-label">Cuisine</label>
                     <select id="modal-cuisine" name="recipe-cuisine" required>
-                        <option selected disabled value="">Select a Cuisine</option>
-                        <option value="American">American</option>
-                        <option value="Mexican">Mexican</option>
-                        <option value="Italian">Italian</option>
-                        <option value="Chinese">Chinese</option>
-                        <option value="French">French</option>
-                        <option value="Japanese">Japanese</option>
+                        {{#each cuisineList}}
+                            <option value="cuisine_ID">{{name}}</option>
+                        {{/each}}
                     </select>
                 </div>
 
                 <div id="ingredients-container">
                     <label class="modal-label">Ingredients</label>
                     <div class="recipe-input-element ingredient-group">
-                        <input type="text" name="ingredientName[]" placeholder="Ingredient Name" required>
-                        <input type="number" name="ingredientQty[]" placeholder="Quantity" required>
+                        <select id="modal-ingredient" name="recipe-ingredient">
+                        {{#each ingredientList}}
+                            <option value="ingredient_ID">{{name}}</option>
+                        {{/each}}
+                        </select>
+                        <input type="number" name="ingredientQty[]" placeholder="Quantity">
                         <select name="ingredientUOM[]">
                             <option value="g">g</option>
                             <option value="ml">ml</option>
