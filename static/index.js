@@ -27,6 +27,7 @@ function insertNewRecipe() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            window.location.reload();
             console.log('Ingredient added successfully!');
         } else {
             console.error('Error adding ingredient:', data.message);
@@ -35,6 +36,7 @@ function insertNewRecipe() {
     .catch(error => {
         console.error('Error HERE:', error);
     });   
+    hideModal();
 }
 
 // Function to add a new row for ingredients

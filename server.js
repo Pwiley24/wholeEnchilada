@@ -8,12 +8,14 @@ var Handlebars = require('handlebars');
 var bodyParser = require('body-parser');
 var port = process.env.PORT || 3033;
 
+console.log("host ", process.env.DB_HOST);
+
 const mysql = require('mysql2');
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    host:"classmysql.engr.oregonstate.edu",
+    user:"cs340_wileypa",
+    password:"0573",
+    database:"cs340_wileypa",
     multipleStatements: true,
     waitForConnections: true,
     connectionLimit: 10,
@@ -219,75 +221,30 @@ app.post('/addRecipeWithIngredients', function(req, res) {
 
             Promise.all(ingredientPromises)
                 .then(() => {
-                    res.status(200).json({ success: true, message: "Recipe and ingredients added successfully!" });
+                    res.status(500).json({ success: true, message: "added ingredients." });
                 })
                 .catch((error) => {
                     console.error('Error adding ingredients:', error);
-                    res.status(500).json({ success: false, message: "Error adding ingredients." });
                 });
         }
     );
 });
 
 
+// Display ingredientsOfRecipe page
+app.get('/ingredientsOfRecipes', function (req, res, next) {
+    console.log("now here");
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
 
-// Add ingredient to Recipe
-app.post('/addIngredientToRecipe', function(req, res) {
-    const { ingredient_ID: ingredient_ID, qty: ingredient_qty, uom: ingredient_uom } = req.body;
-
-    // Fetch the latest recipe_ID
-    pool.query('SELECT recipe_ID FROM Recipes ORDER BY recipe_ID DESC LIMIT 1', (err, results) => {
-        if (err) {
-            console.error('Error fetching latest recipe_ID:', err);
-            return res.status(500).json({ success: false, message: "Error fetching latest recipe ID." });
-        }
-
-        // If no recipes exist, return an error
-        if (results.length === 0) {
-            return res.status(400).json({ success: false, message: "No recipes found." });
-        }
-
-        // Increment the latest recipe_ID by 1
-        const recipe_ID = results[0].recipe_ID + 1;
-
-        // Convert the quantity to grams
-        let qty_to_gram;
-        console.log("qttogram: ", ingredient_uom);
-        switch (ingredient_uom) {
-            case "g":
-                qty_to_gram = ingredient_qty;  // Quantity is already in grams
-                break;
-            case "slices":
-                qty_to_gram = ingredient_qty * 20;  // Example: 1 slice = 20 grams
-                break;
-            case "tbsp":
-                qty_to_gram = ingredient_qty * 15;  // Example: 1 tbsp = 15 grams
-                break;
-            case "cup":
-                qty_to_gram = ingredient_qty * 240;  // Example: 1 cup = 240 grams
-                break;
-            default:
-                return res.status(400).json({ success: false, message: "Invalid UOM" });
-        }
-
-        //  Insert the ingredient into the IngredientsOfRecipes table
-        pool.query(
-            "INSERT INTO IngredientsOfRecipes (recipe_ID, ingredient_ID, ingredient_qty, ingredient_qty_to_gram, ingredient_qty_display_uom) VALUES (?, ?, ?, ?, ?)",
-            [recipe_ID, ingredient_ID, ingredient_qty, qty_to_gram, ingredient_uom],
-            (err, results) => {
-                if (err) {
-                    console.error('Error inserting into IngredientsOfRecipes:', err);
-                    return res.status(500).json({ success: false, message: "Error adding ingredient to recipe." });
-                }
-
-                res.status(200).json({ success: true, message: "Ingredient added to recipe successfully!" });
-            }
-        );
+        pool.query("SELECT * FROM IngredientsOfRecipes", (err, results, fields) => {
+            if (err) throw err;
+            console.log("Results from IngredientsOfRecipes query:", results); // Log query result
+            res.status(200).render("ingredientsOfRecipes", { ingredientsOfRecipe: results });
+        });
+        connection.release();
     });
 });
-
-
-
 
 // Display 404 page
 app.get('*', function (req, res, next) {
