@@ -57,7 +57,7 @@ app.get('/recipes', function (req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
-        pool.query("SELECT cuisine_ID, name FROM Cuisines; SELECT Recipes.recipe_ID AS 'recipe_ID', Recipes.name AS 'recipe_name', Recipes.description AS 'recipe_description', Cuisines.name AS 'cuisine_name' FROM Recipes JOIN Cuisines ON Recipes.cuisine_ID = Cuisines.cuisine_ID; SELECT ingredient_ID, name FROM Ingredients", [1, 2], (err, results, fields) => {
+        pool.query("SELECT cuisine_ID, name FROM Cuisines; SELECT r.recipe_ID AS 'recipe_ID', r.name AS 'recipe_name', r.description AS 'recipe_description', c.name AS 'cuisine_name' FROM Recipes r LEFT JOIN Cuisines c ON r.cuisine_ID = c.cuisine_ID; SELECT ingredient_ID, name FROM Ingredients", [1, 2], (err, results, fields) => {
             if (err) throw err;
             //res.send(results);
             res.status(200).render("recipes", { cuisineList: results[0], recipes: results[1], ingredientList: results[2] });
