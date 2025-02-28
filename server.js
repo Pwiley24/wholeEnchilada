@@ -1,3 +1,5 @@
+// ### Initialization ###
+
 require('dotenv').config();
 
 var path = require('path');
@@ -7,8 +9,6 @@ var fs = require('fs');
 var Handlebars = require('handlebars');
 var bodyParser = require('body-parser');
 var port = process.env.PORT || 3053;
-
-console.log("host ", process.env.DB_HOST);
 
 const mysql = require('mysql2');
 const pool = mysql.createPool({
@@ -59,13 +59,13 @@ app.get('/recipes', function (req, res, next) {
 
         pool.query("SELECT cuisine_ID, name FROM Cuisines; SELECT r.recipe_ID AS 'recipe_ID', r.name AS 'recipe_name', r.description AS 'recipe_description', c.name AS 'cuisine_name' FROM Recipes r LEFT JOIN Cuisines c ON r.cuisine_ID = c.cuisine_ID; SELECT ingredient_ID, name FROM Ingredients", [1, 2], (err, results, fields) => {
             if (err) throw err;
-            //res.send(results);
             res.status(200).render("recipes", { cuisineList: results[0], recipes: results[1], ingredientList: results[2] });
         });
         connection.release();
     });
 });
 
+// Delete a recipe by ID
 app.delete('/deleteRecipe/:recipeid', function(req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
@@ -77,6 +77,7 @@ app.delete('/deleteRecipe/:recipeid', function(req, res, next) {
     })
 });
 
+// Get a single recipe's ingredients by ID
 app.get('/getRecipeIngredientsById/:recipeid', function(req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
@@ -88,6 +89,7 @@ app.get('/getRecipeIngredientsById/:recipeid', function(req, res, next) {
     });
 });
 
+// Get a single recipe by ID
 app.get('/getRecipeById/:recipeid', function(req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
@@ -99,8 +101,8 @@ app.get('/getRecipeById/:recipeid', function(req, res, next) {
     });
 });
 
+// Update a recipe, pass recipe_ID, name, description, and cuisine_ID through the body
 app.put('/updateRecipe', function(req, res, next) {
-    // console.log(req.body);
     const recipe_id = parseInt(req.body.recipe_ID);
     const cuisine_id = parseInt(req.body.cuisine_ID);
 
@@ -129,8 +131,6 @@ app.get('/ingredients', function (req, res, next) {
     });
 });
 
-
-
 // Display Cooked Recipes page
 app.get('/cookedRecipes', function (req, res, next) {
     res.status(200).render("cookedRecipes");
@@ -146,12 +146,12 @@ app.get('/reviews', function (req, res, next) {
     res.status(200).render("reviews");
 });
 
-// get cuisines list
+// Get a list of all cuisines
 app.get('/getCuisineList', function(req, res) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
-        pool.query("Select cuisine_ID, name from Cuisines", (err, results, fields) => {
+        pool.query("SELECT cuisine_ID, name FROM Cuisines", (err, results, fields) => {
             if (err) throw err;
             res.send(results);
         });
@@ -159,12 +159,12 @@ app.get('/getCuisineList', function(req, res) {
     });
 });
 
-// get ingredients
+// Get a list of all ingredients
 app.get('/getIngredientList', function(req, res) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
-        pool.query("Select ingredient_ID, name from Ingredients", (err, results, fields) => {
+        pool.query("SELECT ingredient_ID, name FROM Ingredients", (err, results, fields) => {
             if (err) throw err;
             res.send(results);
         });
@@ -172,6 +172,7 @@ app.get('/getIngredientList', function(req, res) {
     });
 });
 
+// Add a recipe and its ingredients
 app.post('/addRecipeWithIngredients', function(req, res) {
     const { recipe_name, description, cuisine_ID, ingredients } = req.body;
     console.log("name ", recipe_name);
@@ -233,7 +234,6 @@ app.post('/addRecipeWithIngredients', function(req, res) {
 
 // Display ingredientsOfRecipe page
 app.get('/ingredientsOfRecipes', function (req, res, next) {
-    console.log("now here");
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
@@ -251,6 +251,7 @@ app.get('*', function (req, res, next) {
     res.status(404).render("404Page");
 });
 
+// Listener for calls
 app.listen(port, function () {
     console.log("== Server is listening on port", port);
 });

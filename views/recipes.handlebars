@@ -1,7 +1,8 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.js" charset="utf-8" defer></script>
-    {{!-- <script src="../js/delete_recipe.js"></script> --}}
+
     <script>
+        // Delete a recipe
         function deleteRecipe(recipeID) {
             var link = '/deleteRecipe/';
             link += recipeID;
@@ -13,7 +14,8 @@
                 }
             })
         }
-
+        
+        // Remove a recipe row from the table
         function deleteRow(recipeID) {
             var table = document.getElementById("recipe-table");
             for (var i = 0; row = table.rows[i]; i++) {
@@ -24,6 +26,7 @@
             }
         }
 
+        // Get the recipe's values to display on the update form and display it
         function updateRecipeValues(recipeID) {
             var link = '/getRecipeByID/';
             link += recipeID;
@@ -48,6 +51,7 @@
             updateRecord();
         }
 
+        // Update the recipe values in the database to whatever they have been changed to
         function updateRecipe() {
             
             const data = {
@@ -56,21 +60,7 @@
                 recipe_description: document.getElementById("update_recipe_description").value,
                 cuisine_ID: document.getElementById("update_recipe_cuisine").value
             };
-            console.log(data);
-            {{!-- $.ajax({
-                url: '/updateRecipe',
-                type: 'post',
-                dataType: 'json',
-                processData: false,
-                body: JSON.stringify(data),
-                success: function(response) {
-                    console.log('success');
-                },
-                error: function(error) {
-                    console.log('Error: ', error);
-                }
-            }); --}}
-            //$.post('/updateRecipe', data);
+
             var xhttp = new XMLHttpRequest();
             xhttp.open("PUT", "/updateRecipe", true);
             xhttp.setRequestHeader("Content-type", "application/json");
@@ -87,6 +77,7 @@
             xhttp.send(JSON.stringify(data));          
         }
 
+        // For displaying the Handlebars partial page
         function getRecipe(recipeID, recipeName) {
             var link = '/getRecipeByID/';
             link += recipeID;
@@ -96,10 +87,6 @@
                 success: function(result) {
                     console.log(result);
                     console.log(recipeName);
-                    //var templateSource = document.getElementById('ingredients-template').innerHTML;
-                    //var template = Handlebars.compile(templateSource);
-                    //var html = template({singleRecipeName: recipeName, ingredients: result,});
-                    //document.getElementById("single-recipe").innerHTML = html;
                     const ingredientsTemplate = 
                     `
                         <div class="recipe-post">
@@ -128,6 +115,7 @@
             document.getElementById("single-recipe").style.display = "block";
         }
     </script>
+    
     <script id="ingredients-template" type="text/x-handlebars-template">
         <div class="recipe-post">
             <div class="recipe-title">
