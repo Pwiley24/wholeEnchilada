@@ -6,16 +6,16 @@ var exphbs = require('express-handlebars');
 var fs = require('fs');
 var Handlebars = require('handlebars');
 var bodyParser = require('body-parser');
-var port = process.env.PORT || 3033;
+var port = process.env.PORT || 3053;
 
 console.log("host ", process.env.DB_HOST);
 
 const mysql = require('mysql2');
 const pool = mysql.createPool({
-    host:"classmysql.engr.oregonstate.edu",
-    user:"cs340_wileypa",
-    password:"0573",
-    database:"cs340_wileypa",
+    host:process.env.DB_HOST,
+    user:process.env.DB_USER,
+    password:process.env.DB_PASSWORD,
+    database:process.env.DB_DATABASE,
     multipleStatements: true,
     waitForConnections: true,
     connectionLimit: 10,
