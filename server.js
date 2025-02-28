@@ -5,9 +5,8 @@ var express = require('express');
 var exphbs = require('express-handlebars');
 var fs = require('fs');
 var Handlebars = require('handlebars');
-//app.use(express.json());
+var bodyParser = require('body-parser');
 var port = process.env.PORT || 3033;
-
 
 const mysql = require('mysql2');
 const pool = mysql.createPool({
@@ -35,9 +34,7 @@ const pool = mysql.createPool({
   module.exports = pool;
 
 var app = express();
-
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname, 'static'))); // Serve static files from 'static'
 
 app.engine("handlebars", exphbs.engine({
@@ -45,8 +42,6 @@ app.engine("handlebars", exphbs.engine({
 }));
 
 app.set("view engine", "handlebars");
-
-app.use(express.json());
 
 
 // Display Home page
@@ -80,7 +75,7 @@ app.delete('/deleteRecipe/:recipeid', function(req, res, next) {
     })
 });
 
-app.get('/getRecipeById/:recipeid', function(req, res, next) {
+app.get('/getRecipeIngredientsById/:recipeid', function(req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
         pool.query("SELECT ir.recipe_ID, ir.ingredient_ID, r.name AS 'recipe_name', i.name AS 'ingredient_name', ingredient_qty, ingredient_qty_display_uom, ingredient_qty_to_gram  FROM IngredientsOfRecipes ir JOIN Recipes r ON ir.recipe_ID = r.recipe_ID JOIN Ingredients i ON ir.ingredient_ID = i.ingredient_ID WHERE ir.recipe_ID = ?", [req.params.recipeid], (err, results) => {
@@ -89,6 +84,33 @@ app.get('/getRecipeById/:recipeid', function(req, res, next) {
         });
         connection.release();
     });
+});
+
+app.get('/getRecipeById/:recipeid', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("SELECT r.recipe_ID, r.name as 'recipe_name', r.description as 'recipe_description', r.cuisine_ID, c.name AS 'cuisine_name' FROM Recipes r LEFT JOIN Cuisines c ON r.cuisine_ID = c.cuisine_ID WHERE recipe_ID = ?", [req.params.recipeid], (err, results) => {
+            if (err) throw err;
+            res.status(200).send(results);
+        });
+        connection.release();
+    });
+});
+
+app.put('/updateRecipe', function(req, res, next) {
+    // console.log(req.body);
+    const recipe_id = parseInt(req.body.recipe_ID);
+    const cuisine_id = parseInt(req.body.cuisine_ID);
+
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("UPDATE Recipes SET name = ?, description = ?, cuisine_ID = ? WHERE recipe_ID = ?", [req.body.recipe_name, req.body.recipe_description, cuisine_id, recipe_id], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+    });
+
+    res.status(200).send();
 });
 
 // Display Ingredients page

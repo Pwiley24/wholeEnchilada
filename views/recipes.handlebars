@@ -24,6 +24,69 @@
             }
         }
 
+        function updateRecipeValues(recipeID) {
+            var link = '/getRecipeByID/';
+            link += recipeID;
+            $.ajax({
+                url: link,
+                type: 'GET',
+                success: function(result) {
+                    console.log(result);
+                    oFormObject = document.forms['updateRecipe'];
+                    oFormElement = oFormObject.elements["update_recipe_id"];
+                    oFormElement.value = recipeID;
+                    oFormElement = oFormObject.elements["update_recipe_name"];
+                    oFormElement.value = result[0]["recipe_name"];
+                    oFormElement = oFormObject.elements["update_recipe_description"];
+                    oFormElement.value = result[0]["recipe_description"];
+                    console.log(result[0]["cuisine_ID"]);
+                    oFormElement = oFormObject.elements["update_recipe_cuisine"];
+                    oFormElement.value = result[0]["cuisine_ID"];
+                }
+            });
+            
+            updateRecord();
+        }
+
+        function updateRecipe() {
+            
+            const data = {
+                recipe_ID: document.getElementById("update_recipe_id").value,
+                recipe_name: document.getElementById("update_recipe_name").value,
+                recipe_description: document.getElementById("update_recipe_description").value,
+                cuisine_ID: document.getElementById("update_recipe_cuisine").value
+            };
+            console.log(data);
+            {{!-- $.ajax({
+                url: '/updateRecipe',
+                type: 'post',
+                dataType: 'json',
+                processData: false,
+                body: JSON.stringify(data),
+                success: function(response) {
+                    console.log('success');
+                },
+                error: function(error) {
+                    console.log('Error: ', error);
+                }
+            }); --}}
+            //$.post('/updateRecipe', data);
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("PUT", "/updateRecipe", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    location.reload(true);
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 200) {
+                    console.log("There was an error with the input.");
+                }
+            }
+
+            xhttp.send(JSON.stringify(data));          
+        }
+
         function getRecipe(recipeID, recipeName) {
             var link = '/getRecipeByID/';
             link += recipeID;
@@ -169,7 +232,7 @@
                                 <td><a href="#" onclick="getRecipe({{recipe_ID}}, '{{recipe_name}}')">{{recipe_name}}</a></td>
                                 <td class="text-left">{{recipe_description}}</td>
                                 <td class="text-left" id ="filter-cuisine">{{cuisine_name}}</td>
-                                <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
+                                <td><a href="#" onclick="updateRecipeValues({{recipe_ID}})">Edit</a></td>
                                 <td><a href="#" onclick="deleteRecipe({{recipe_ID}})">Delete</a></td>
                             </tr>
                             {{/each}}
@@ -188,25 +251,32 @@
                 <div id="updateRecord" style="display: none">
                     <h3>Update Recipe</h3>
                     <div class="formDiv">
+                        <form class="formContainer" id="updateRecipe" action="javascript:updateRecipe()">
+                        <div class="formInputContainer">
+                            <label for="id" class="formInputLabel adjustWidth">Recipe ID:</label>
+                            <div class="formInputElement">
+                                <input type="number" id="update_recipe_id" name="id" class="formInput">
+                            </div>
+                        </div>
                         <form class="formContainer" id="updateRecipe">
                         <div class="formInputContainer">
                             <label for="Name" class="formInputLabel adjustWidth">Recipe Name:</label>
                             <div class="formInputElement">
-                                <input type="text" id="name" name="name" class="formInput">
+                                <input type="text" id="update_recipe_name" name="name" class="formInput">
                             </div>
                         </div>
                         <div class="formInputContainer">
                             <label for="Description" class="formInputLabel adjustWidth">Description:</label>
                             <div class="formInputElement">
-                                <input type="text" id="description" name="description" class="formInput">
+                                <input type="text" id="update_recipe_description" name="description" class="formInput">
                             </div>
                         </div>
                         <div class="formInputContainer">
                             <label for="Cuisine" class="formInputLabel adjustWidth">Cuisine:</label>
                             <div class="formInputElement">
-                                <select id="cuisine" class="formInput">
+                                <select id="update_recipe_cuisine" class="formInput">
                                     {{#each cuisineList}}
-                                    <option value="cuisine_ID">{{name}}</option>
+                                    <option value={{cuisine_ID}}>{{name}}</option>
                                     {{/each}}
                                 </select>
                             </div>
