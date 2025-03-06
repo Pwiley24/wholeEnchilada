@@ -11,11 +11,11 @@
   </tr>
   {{#each ingredients}}
     <tr>
-      <td>{{this.ingredient_ID}}</td>
-      <td>{{this.name}}</td>
-      <td>{{this.cost_per_gram}}</td>
-      <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-      <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
+      <td>{{ingredient_ID}}</td>
+      <td>{{name}}</td>
+      <td>{{cost_per_gram}}</td>
+      <td><a href="#" onclick="updateRecord({{ingredient_ID}})">Edit</a></td>
+      <td><a href="#" onclick="deleteIngredient({{ingredient_ID}})">Delete</a></td>
     </tr>
   {{/each}}
 </table><!-- browse -->
@@ -69,31 +69,3 @@
     </form> 
   </div>
 </div><!-- update -->
-
-<div id="deleteRecord" style="display: none">
-  <h3>Delete Ingredient</h3>
-  <div class="formDiv">
-    <form class="formContainer" id="deleteIngredient">
-      <div class="formInputContainer">
-        <label for="ID" class="formInputLabel">ID:</label>
-        <div class="formInputElement">
-          <input type="text" id="ingredientID" name="ingredientID" class="formInput" disabled>
-        </div>
-      </div>
-      <div class="formInputContainer">
-        <label for="Name" class="formInputLabel">Name:</label>
-        <div class="formInputElement">
-          <input type="text" id="ingredientName" name="ingredientName" class="formInput" disabled>
-        </div>
-      </div>
-      <div class="formInputContainer">
-        <label for="Cost" class="formInputLabel">Cost (per gram):</label>
-        <div class="formInputElement">
-          <input type="number" id="ingredientCost" name="ingredientCost" class="formInput" disabled>
-        </div>
-      </div>
-      <input class="buttons" type="submit" id="UpdateSaveIngredient" value="Delete">
-      <input class="buttons" type="button" value="Cancel" onclick="browse()">
-    </form> 
-  </div>
-</div><!-- delete -->

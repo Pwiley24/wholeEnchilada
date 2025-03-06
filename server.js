@@ -51,7 +51,7 @@ app.get('', function (req, res, next) {
     res.status(200).render("homepage");
 });
 
-
+// #region RECIPES
 // Display Recipes page
 app.get('/recipes', function (req, res, next) {
     pool.getConnection((err, connection) => {
@@ -60,6 +60,19 @@ app.get('/recipes', function (req, res, next) {
         pool.query("SELECT cuisine_ID, name FROM Cuisines; SELECT r.recipe_ID AS 'recipe_ID', r.name AS 'recipe_name', r.description AS 'recipe_description', c.name AS 'cuisine_name' FROM Recipes r LEFT JOIN Cuisines c ON r.cuisine_ID = c.cuisine_ID; SELECT ingredient_ID, name FROM Ingredients", [1, 2], (err, results, fields) => {
             if (err) throw err;
             res.status(200).render("recipes", { cuisineList: results[0], recipes: results[1], ingredientList: results[2] });
+        });
+        connection.release();
+    });
+});
+
+// Get a list of all recipes
+app.get('/getRecipeList', function(req, res) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("SELECT recipe_ID, name FROM Recipes", (err, results, fields) => {
+            if (err) throw err;
+            res.send(results);
         });
         connection.release();
     });
@@ -116,7 +129,9 @@ app.put('/updateRecipe', function(req, res, next) {
 
     res.status(200).send();
 });
+// #endregion
 
+// #region INGREDIENTS
 // Display Ingredients page
 app.get('/ingredients', function (req, res, next) {
     pool.getConnection((err, connection) => {
@@ -131,6 +146,33 @@ app.get('/ingredients', function (req, res, next) {
     });
 });
 
+// Get a list of all ingredients
+app.get('/getIngredientList', function(req, res) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("SELECT ingredient_ID, name FROM Ingredients", (err, results, fields) => {
+            if (err) throw err;
+            res.send(results);
+        });
+        connection.release();
+    });
+});
+
+// Delete an ingredient by ID
+app.delete('/deleteIngredient/:ingredientid', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("DELETE FROM Ingredients WHERE ingredient_ID = ?", [req.params.ingredientid], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+        res.sendStatus(204);
+    })
+});
+// #endregion
+
+// #region COOKED RECIPES
 // Display Cooked Recipes page
 app.get('/cookedRecipes', function (req, res, next) {
     pool.getConnection((err, connection) => {
@@ -144,6 +186,20 @@ app.get('/cookedRecipes', function (req, res, next) {
     });
 });
 
+// Delete cooked recipe by ID
+app.delete('/deleteCookedRecipe/:cookedid', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("DELETE FROM CookedRecipes WHERE cooked_ID = ?", [req.params.cookedid], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+        res.sendStatus(204);
+    })
+});
+// #endregion
+
+// #region CUISINES
 // Display Cuisines page
 app.get('/cuisines', function (req, res, next) {
     pool.getConnection((err, connection) => {
@@ -152,19 +208,6 @@ app.get('/cuisines', function (req, res, next) {
         pool.query("SELECT cuisine_ID, name AS 'cuisine_name' FROM Cuisines;", (err, results, fields) => {
             if (err) throw err;
             res.status(200).render("cuisines", {cuisines: results});
-        });
-        connection.release();
-    });
-});
-
-// Display Reviews page
-app.get('/reviews', function (req, res, next) {
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-
-        pool.query("SELECT rv.review_ID, r.name AS 'recipe_name', reviewer AS 'review_reviewer', DATE_FORMAT(timestamp, '%Y-%m-%d') AS 'review_date', rating as 'review_rating' FROM Reviews rv JOIN Recipes r ON rv.recipe_ID = r.recipe_ID;", (err, results, fields) => {
-            if (err) throw err;
-            res.status(200).render("reviews", {reviews: results});
         });
         connection.release();
     });
@@ -183,14 +226,58 @@ app.get('/getCuisineList', function(req, res) {
     });
 });
 
-// Get a list of all ingredients
-app.get('/getIngredientList', function(req, res) {
+// Delete cooked recipe by ID
+app.delete('/deleteCuisine/:cuisineid', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("UPDATE Recipes SET cuisine_id = NULL WHERE cuisine_id = ?", [req.params.cuisineid], (err, results) => {
+            if (err) throw err;
+        });
+        pool.query("DELETE FROM Cuisines WHERE cuisine_ID = ?", [req.params.cuisineid], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+        res.sendStatus(204);
+    })
+});
+// #endregion
+
+// #region REVIEWS
+// Display Reviews page
+app.get('/reviews', function (req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
-        pool.query("SELECT ingredient_ID, name FROM Ingredients", (err, results, fields) => {
+        pool.query("SELECT rv.review_ID, r.name AS 'recipe_name', reviewer AS 'review_reviewer', DATE_FORMAT(timestamp, '%Y-%m-%d') AS 'review_date', rating as 'review_rating' FROM Reviews rv JOIN Recipes r ON rv.recipe_ID = r.recipe_ID;", (err, results, fields) => {
             if (err) throw err;
-            res.send(results);
+            res.status(200).render("reviews", {reviews: results});
+        });
+        connection.release();
+    });
+});
+
+// Delete review by ID
+app.delete('/deleteReview/:reviewid', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("DELETE FROM Reviews WHERE review_ID = ?", [req.params.reviewid], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+        res.sendStatus(204);
+    })
+});
+// #endregion
+
+// #region RECIPE INGREDIENTS
+// Display ingredientsOfRecipe page
+app.get('/ingredientsOfRecipes', function (req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("SELECT * FROM IngredientsOfRecipes", (err, results, fields) => {
+            if (err) throw err;
+            res.status(200).render("ingredientsOfRecipes", { ingredientsOfRecipe: results });
         });
         connection.release();
     });
@@ -254,20 +341,7 @@ app.post('/addRecipeWithIngredients', function(req, res) {
         }
     );
 });
-
-
-// Display ingredientsOfRecipe page
-app.get('/ingredientsOfRecipes', function (req, res, next) {
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-
-        pool.query("SELECT * FROM IngredientsOfRecipes", (err, results, fields) => {
-            if (err) throw err;
-            res.status(200).render("ingredientsOfRecipes", { ingredientsOfRecipe: results });
-        });
-        connection.release();
-    });
-});
+// #endregion
 
 // Display 404 page
 app.get('*', function (req, res, next) {

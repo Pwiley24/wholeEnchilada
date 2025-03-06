@@ -143,38 +143,6 @@
                         </form>
                     </div>
                 </div><!-- update -->
-
-                <div id="deleteRecord" style="display: none">
-                    <h3>Delete Recipe</h3>
-                    <div class="formDiv">
-                        <form class="formContainer" id="deleteRecipe">
-                        <div class="formInputContainer">
-                            <label for="Name" class="formInputLabel adjustWidth">Name</label>
-                            <div class="formInputElement">
-                                <input type="text" id="name" name="name" class="formInput" disabled>
-                            </div>
-                        </div>
-                        <div class="formInputContainer">
-                            <label for="Description" class="formInputLabel adjustWidth">Description:</label>
-                            <div class="formInputElement">
-                                <input type="text" id="description" name="description" class="formInput" disabled>
-                            </div>
-                        </div>
-                        <div class="formInputContainer">
-                            <label for="Cuisine" class="formInputLabel adjustWidth">Cuisine:</label>
-                            <div class="formInputElement">
-                                <select id="cuisine" class="formInput" disabled>
-                                    {{#each cuisineList}}
-                                        <option value="cuisine_ID">{{name}}</option>
-                                    {{/each}}
-                                </select>
-                            </div>
-                        </div>
-                        <input class="buttons" type="submit" id="deleteRecipe" value="Delete">
-                        <input class="buttons" type="button" value="Cancel" onclick="browse()">
-                        </form>
-                    </div>
-                </div><!-- delete -->
             </div>
         </div>
     </div>

@@ -9,52 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.js" charset="utf-8" defer></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="/index.js" charset="utf-8" defer></script>
-    <script language="JavaScript">
-      function showform(dowhat) {
-        /*
-         * four DIVS: browse, insert, update, delete
-         * this function sets one visible the others not
-         */
-        if (dowhat == "addRecord") {
-          document.getElementById("browse").style.display = "none";
-          document.getElementById("insert").style.display = "block";
-          document.getElementById("updateRecord").style.display = "none";
-          document.getElementById("deleteRecord").style.display = "none";
-        } else if (dowhat == "updateRecord") {
-          console.log(document.getElementById("browse"))
-          document.getElementById("browse").style.display = "none";
-          document.getElementById("insert").style.display = "none";
-          document.getElementById("updateRecord").style.display = "block";
-          document.getElementById("deleteRecord").style.display = "none";
-        } else if (dowhat == "deleteRecord") {
-          document.getElementById("browse").style.display = "none";
-          document.getElementById("insert").style.display = "none";
-          document.getElementById("updateRecord").style.display = "none";
-          document.getElementById("deleteRecord").style.display = "block";
-        } else {
-          //by default display browse
-          document.getElementById("browse").style.display = "block";
-          document.getElementById("insert").style.display = "none";
-          document.getElementById("updateRecord").style.display = "none";
-          document.getElementById("deleteRecord").style.display = "none";
-        }
-      }
-      function addRecord() {
-        showform("addRecord");
-      }
-      function updateRecord() {
-        showform("updateRecord");
-      }
-      function deleteRecord() {
-        //showform("deleteRecord");
-      }
-      function browse() {
-        showform("browse");
-      }
-      function showAll() {
-        showform("all");
-      }
-    </script>
 </head>
 
 <header>

@@ -19,7 +19,7 @@
       <td class="text-center">{{review_date}}</td>
       <td class="text-right">{{review_rating}}</td>
       <td><a href="#" onclick="updateRecord({{review_ID}})">Edit</a></td>
-      <td><a href="#" onclick="deleteRecord({{review_ID}})">Delete</a></td>
+      <td><a href="#" onclick="deleteReview({{review_ID}})">Delete</a></td>
     </tr>
     {{/each}}
   </table>
@@ -92,25 +92,3 @@
     </form> 
   </div>
 </div><!-- update -->
-
-<div id="deleteRecord" style="display: none">
-  <h3>Delete Cuisine</h3>
-  <div class="formDiv">
-    <form class="formContainer" id="deleteCuisine">
-      <div class="formInputContainer">
-        <label for="ID" class="formInputLabel adjustWidth">ID:</label>
-        <div class="formInputElement">
-          <input type="text" id="cuisineID" name="cuisineID" class="formInput" disabled>
-        </div>
-      </div>
-      <div class="formInputContainer">
-        <label for="Name" class="formInputLabel adjustWidth">Name:</label>
-        <div class="formInputElement">
-          <input type="text" id="cuisineName" name="cuisineName" class="formInput">
-        </div>
-      </div>
-      <input class="buttons" type="submit" id="DeleteCuisine" value="Delete">
-      <input class="buttons" type="button" value="Cancel" onclick="browse()">
-    </form> 
-  </div>
-</div><!-- delete -->

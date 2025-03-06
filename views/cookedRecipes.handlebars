@@ -20,7 +20,7 @@
         <td class="text-left">{{cooked_alteration}}</td>
         <td class="text-left">{{cooked_notes}}</td>
         <td><a href="#" onclick="updateRecord({{cooked_ID}})">Edit</a></td>
-        <td><a href="#" onclick="deleteRecord({{cooked_ID}})">Delete</a></td>
+        <td><a href="#" onclick="deleteCookedRecipe({{cooked_ID}})">Delete</a></td>
       </tr>
       {{/each}}
     </tbody>
@@ -106,43 +106,3 @@
     </form>
   </div>
 </div><!-- update -->
-
-<div id="deleteRecord" style="display: none">
-  <h3>Delete Cooked Recipe</h3>
-  <div class="formDiv">
-    <form class="formContainer" id="deleteCookedRecipe">
-      <div class="formInputContainer">
-        <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
-        <div class="formInputElement">
-          <select id="recipe" class="formInput" disabled>
-            <option value="1">Orange Chicken</option>
-            <option value="2">BBQ Pizza</option>
-            <option value="3">Pesto Pasta</option>
-            <option value="4">Gyro</option>
-            <option value="5">Breakfast Burrito</option>
-          </select>
-        </div>
-      </div>
-      <div class="formInputContainer">
-        <label for="Date" class="formInputLabel adjustWidth">Date:</label>
-        <div class="formInputElement">
-          <input type="date" id="date" name="date" class="formInput" disabled>
-        </div>
-      </div>
-      <div class="formInputContainer">
-        <label for="Alterations" class="formInputLabel adjustWidth">Alteration(s):</label>
-        <div class="formInputElement">
-          <input type="text" id="alterations" name="alterations" class="formInput" disabled>
-        </div>
-      </div>
-      <div class="formInputContainer">
-        <label for="Notes" class="formInputLabel adjustWidth">Note(s):</label>
-        <div class="formInputElement">
-          <input type="text" id="notes" name="notes" class="formInput" disabled>
-        </div>
-      </div>
-      <input class="buttons" type="submit" id="deleteCookedRecipe" value="Delete">
-      <input class="buttons" type="button" value="Cancel" onclick="browse()">
-    </form>
-  </div>
-</div><!-- delete -->

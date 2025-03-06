@@ -1,3 +1,23 @@
+function addRecord() {
+    document.getElementById("browse").style.display = "none";
+    document.getElementById("insert").style.display = "block";
+    document.getElementById("updateRecord").style.display = "none";
+  }
+  
+  function updateRecord() {
+    document.getElementById("browse").style.display = "none";
+    document.getElementById("insert").style.display = "none";
+    document.getElementById("updateRecord").style.display = "block";
+  }
+
+  function browse() {
+    document.getElementById("browse").style.display = "block";
+    document.getElementById("insert").style.display = "none";
+    document.getElementById("updateRecord").style.display = "none";
+  }
+
+
+
 /*
  * Function to insert a new recipe into the database. Takes
  * in the elements of a new recipe element.
@@ -269,29 +289,16 @@ if (modalAddButton) {
 }
 
 
-// **** RECIPES **** //
+// #region RECIPES
 // Delete a recipe
 function deleteRecipe(recipeID) {
-    var link = '/deleteRecipe/';
-    link += recipeID;
     $.ajax({
-        url: link,
+        url: '/deleteRecipe/'+recipeID,
         type: 'DELETE',
         success: function(result) {
-            deleteRow(recipeID);
+            location.reload();
         }
     })
-}
-
-// Remove a recipe row from the table
-function deleteRecipeRow(recipeID) {
-    var table = document.getElementById("recipe-table");
-    for (var i = 0; row = table.rows[i]; i++) {
-        if (table.rows[i].getAttribute("data-value") == recipeID) {
-            table.deleteRow(i);
-            break;
-        }
-    }
 }
 
 // Get the recipe's values to display on the update form and display it
@@ -327,22 +334,17 @@ function updateRecipe() {
         recipe_name: document.getElementById("update_recipe_name").value,
         recipe_description: document.getElementById("update_recipe_description").value,
         cuisine_ID: document.getElementById("update_recipe_cuisine").value
-    };
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "/updateRecipe", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-
-    xhttp.onreadystatechange = () => {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            location.reload(true);
+    };   
+    
+    $.ajax({
+        url: '/updateRecipe',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(result) {
+            location.reload();
         }
-        else if (xhttp.readyState == 4 && xhttp.status != 200) {
-            console.log("There was an error with the input.");
-        }
-    }
-
-    xhttp.send(JSON.stringify(data));          
+    })
 }
 
 // For displaying the ingredients of one recipe
@@ -366,6 +368,56 @@ function getSelectedRecipeIngredients(recipeID, recipeName) {
     })
     document.getElementById("single-recipe").style.display = "block";
 }
+// #endregion
 
+// #region INGREDIENTS
+// Delete an Ingredient
+function deleteIngredient(ingredientID) {
+    $.ajax({
+        url: '/deleteIngredient/'+ingredientID,
+        type: 'DELETE',
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+// #endregion
 
-// **** CUISINES **** //
+// #region COOKED RECIPES
+// Delete a cooked recipe
+function deleteCookedRecipe(cookedid) {
+    $.ajax({
+        url: '/deleteCookedRecipe/'+cookedid,
+        type: 'DELETE',
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+// #endregion
+
+// #region CUISINES
+// Delete a cuisine
+function deleteCuisine(cuisineid) {
+    $.ajax({
+        url: '/deleteCuisine/'+cuisineid,
+        type: 'DELETE',
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+// #endregion
+
+// #region REVIEWS
+// Delete a review
+function deleteReview(reviewid) {
+    $.ajax({
+        url: '/deleteReview/'+reviewid,
+        type: 'DELETE',
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+// #endregion
