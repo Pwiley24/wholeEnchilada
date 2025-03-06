@@ -439,6 +439,7 @@ table a {
     background-color: #677100;
     border-radius: 10px;
     margin: auto;
+    display: block;
 }
 
 .new-btn {

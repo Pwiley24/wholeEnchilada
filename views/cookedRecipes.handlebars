@@ -1,62 +1,30 @@
 <h1>Cooked Recipes</h1>
 <div id="browse" style="display: block">
-<h3>Browse Cooked Recipes</h3>
-<a class="new-btn" href="#" onclick="addRecord()">New</a>
-<table>
-  <tr>
-    {{!-- <th><a href="#" onclick="addRecord()">New</a></th> --}}
-    <th class="text-center">Cooked ID</th>
-    <th class="text-left">Recipe</th>
-    <th class="text-center">Date</th>
-    <th class="text-left">Alteration(s)</th>
-    <th class="text-left">Note(s)</th>
-  </tr>
-  <tr>
-    <td class="text-center">1</td>
-    <td class="text-left">Orange Chicken</td>
-    <td class="text-center">12/29/2012</td>
-    <td class="text-left">Substitute chicken for tofu</td>
-    <td class="text-left">None</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-  <tr>
-    <td class="text-center">2</td>
-    <td class="text-left">Gyro</td>
-    <td class="text-center">9/12/2020</td>
-    <td class="text-left">None</td>
-    <td class="text-left">Cook for extra 5 minutes</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-  <tr>
-    <td class="text-center">3</td>
-    <td class="text-left">Breakfast Burrito</td>
-    <td class="text-center">3/2/2003</td>
-    <td class="text-left">None</td>
-    <td class="text-left">None</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-  <tr>
-    <td class="text-center">4</td>
-    <td class="text-left">BBQ Pizza</td>
-    <td class="text-center">6/17/2019</td>
-    <td class="text-left">Used a gluden free crust</td>
-    <td class="text-left">None</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-  <tr>
-    <td class="text-center">5</td>
-    <td class="text-left">Pesto Pasta</td>
-    <td class="text-center">4/10/2025</td>
-    <td class="text-left">None</td>
-    <td class="text-left">Add Parmesan for serving</td>
-    <td><a href="#" onclick="updateRecord('this.ID')">Edit</a></td>
-    <td><a href="#" onclick="deleteRecord('this.ID')">Delete</a></td>
-  </tr>
-</table>
+  <h3>Browse Cooked Recipes</h3>
+  <a class="new-btn" href="#" onclick="addRecord()">New</a>
+  <table>
+    <tbody>
+      <tr>
+        {{!-- <th><a href="#" onclick="addRecord()">New</a></th> --}}
+        <th class="text-center">Cooked ID</th>
+        <th class="text-left">Recipe</th>
+        <th class="text-center">Date</th>
+        <th class="text-left">Alteration(s)</th>
+        <th class="text-left">Note(s)</th>
+      </tr>
+      {{#each cookedRecipes}}
+      <tr>
+        <td class="text-center">{{cooked_ID}}</td>
+        <td class="text-left">{{recipe_name}}</td>
+        <td class="text-center">{{cooked_date}}</td>
+        <td class="text-left">{{cooked_alteration}}</td>
+        <td class="text-left">{{cooked_notes}}</td>
+        <td><a href="#" onclick="updateRecord({{cooked_ID}})">Edit</a></td>
+        <td><a href="#" onclick="deleteRecord({{cooked_ID}})">Delete</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </div> <!-- browse -->
 
 <div id="insert" style="display: none">

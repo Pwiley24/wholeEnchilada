@@ -269,4 +269,103 @@ if (modalAddButton) {
 }
 
 
+// **** RECIPES **** //
+// Delete a recipe
+function deleteRecipe(recipeID) {
+    var link = '/deleteRecipe/';
+    link += recipeID;
+    $.ajax({
+        url: link,
+        type: 'DELETE',
+        success: function(result) {
+            deleteRow(recipeID);
+        }
+    })
+}
 
+// Remove a recipe row from the table
+function deleteRecipeRow(recipeID) {
+    var table = document.getElementById("recipe-table");
+    for (var i = 0; row = table.rows[i]; i++) {
+        if (table.rows[i].getAttribute("data-value") == recipeID) {
+            table.deleteRow(i);
+            break;
+        }
+    }
+}
+
+// Get the recipe's values to display on the update form and display it
+function updateRecipeValues(recipeID) {
+    var link = '/getRecipeByID/';
+    link += recipeID;
+    $.ajax({
+        url: link,
+        type: 'GET',
+        success: function(result) {
+            console.log(result);
+            oFormObject = document.forms['updateRecipe'];
+            oFormElement = oFormObject.elements["update_recipe_id"];
+            oFormElement.value = recipeID;
+            oFormElement = oFormObject.elements["update_recipe_name"];
+            oFormElement.value = result[0]["recipe_name"];
+            oFormElement = oFormObject.elements["update_recipe_description"];
+            oFormElement.value = result[0]["recipe_description"];
+            console.log(result[0]["cuisine_ID"]);
+            oFormElement = oFormObject.elements["update_recipe_cuisine"];
+            oFormElement.value = result[0]["cuisine_ID"];
+        }
+    });
+    
+    updateRecord();
+}
+
+// Update the recipe values in the database to whatever they have been changed to
+function updateRecipe() {
+    
+    const data = {
+        recipe_ID: document.getElementById("update_recipe_id").value,
+        recipe_name: document.getElementById("update_recipe_name").value,
+        recipe_description: document.getElementById("update_recipe_description").value,
+        cuisine_ID: document.getElementById("update_recipe_cuisine").value
+    };
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("PUT", "/updateRecipe", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            location.reload(true);
+        }
+        else if (xhttp.readyState == 4 && xhttp.status != 200) {
+            console.log("There was an error with the input.");
+        }
+    }
+
+    xhttp.send(JSON.stringify(data));          
+}
+
+// For displaying the ingredients of one recipe
+function getSelectedRecipeIngredients(recipeID, recipeName) {
+    var link = '/getRecipeIngredientsByID/';
+    link += recipeID;
+    $.ajax({
+        url: link,
+        type: 'GET',
+        success: function(result) {
+            const selectedRecipeName = document.getElementById('selected-recipe-title');
+            selectedRecipeName.innerHTML = recipeName;
+            const selectedRecipeIngredientList = document.getElementById('selected-recipe-ingredient-list');
+            selectedRecipeIngredientList.innerHTML = '';
+            result.forEach(ingredient => {
+                const li = document.createElement("li");
+                li.textContent = ingredient.ingredient_qty+' '+ingredient.ingredient_qty_display_uom+' of '+ingredient.ingredient_name;
+                selectedRecipeIngredientList.appendChild(li);
+            })
+        }
+    })
+    document.getElementById("single-recipe").style.display = "block";
+}
+
+
+// **** CUISINES **** //

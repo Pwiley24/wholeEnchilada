@@ -133,17 +133,41 @@ app.get('/ingredients', function (req, res, next) {
 
 // Display Cooked Recipes page
 app.get('/cookedRecipes', function (req, res, next) {
-    res.status(200).render("cookedRecipes");
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("SELECT cr.cooked_ID, r.name AS 'recipe_name', DATE_FORMAT(cr.timestamp, '%Y-%m-%d') as 'cooked_date', IFNULL(cr.alteration, '') as 'cooked_alteration', IFNULL(cr.notes, '') as 'cooked_notes' FROM CookedRecipes cr JOIN Recipes r on cr.recipe_ID = r.recipe_ID;", (err, results, fields) => {
+            if (err) throw err;
+            res.status(200).render("cookedRecipes", {cookedRecipes: results});
+        });
+        connection.release();
+    });
 });
 
 // Display Cuisines page
 app.get('/cuisines', function (req, res, next) {
-    res.status(200).render("cuisines");
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("SELECT cuisine_ID, name AS 'cuisine_name' FROM Cuisines;", (err, results, fields) => {
+            if (err) throw err;
+            res.status(200).render("cuisines", {cuisines: results});
+        });
+        connection.release();
+    });
 });
 
 // Display Reviews page
 app.get('/reviews', function (req, res, next) {
-    res.status(200).render("reviews");
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("SELECT rv.review_ID, r.name AS 'recipe_name', reviewer AS 'review_reviewer', DATE_FORMAT(timestamp, '%Y-%m-%d') AS 'review_date', rating as 'review_rating' FROM Reviews rv JOIN Recipes r ON rv.recipe_ID = r.recipe_ID;", (err, results, fields) => {
+            if (err) throw err;
+            res.status(200).render("reviews", {reviews: results});
+        });
+        connection.release();
+    });
 });
 
 // Get a list of all cuisines
@@ -239,7 +263,6 @@ app.get('/ingredientsOfRecipes', function (req, res, next) {
 
         pool.query("SELECT * FROM IngredientsOfRecipes", (err, results, fields) => {
             if (err) throw err;
-            console.log("Results from IngredientsOfRecipes query:", results); // Log query result
             res.status(200).render("ingredientsOfRecipes", { ingredientsOfRecipe: results });
         });
         connection.release();

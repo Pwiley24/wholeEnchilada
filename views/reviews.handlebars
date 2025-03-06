@@ -1,91 +1,116 @@
-<body id = "reviews-page">
-<div class="centerContainer" id="browse">
-    <h1>Write a Review for your recipe</h1>
+<h1>Reviews</h1>
+<div id="browse" style="display: block">
+  <h3>Browse Reviews</h3>
+  <a class="new-btn" href="#" onclick="addRecord()">New</a>
+  <table>
+    <tr>
+      {{!-- <th><a href="#" onclick="addRecord()">New</a></th> --}}
+      <th class="text-center">ID</th>
+      <th class="text-left">Recipe</th>
+      <th class="text-left">Reviewer</th>
+      <th class="text-center">Date</th>
+      <th class="text-right">Rating</th>
+    </tr>
+    {{#each reviews}}
+    <tr>
+      <td class="text-center">{{review_ID}}</td>
+      <td class="text-left">{{recipe_name}}</td>
+      <td class="text-left">{{review_reviewer}}</td>
+      <td class="text-center">{{review_date}}</td>
+      <td class="text-right">{{review_rating}}</td>
+      <td><a href="#" onclick="updateRecord({{review_ID}})">Edit</a></td>
+      <td><a href="#" onclick="deleteRecord({{review_ID}})">Delete</a></td>
+    </tr>
+    {{/each}}
+  </table>
+</div> <!-- browse -->
 
-    <div class="formDiv">
-        <form class="formContainer">
-            <div class="formInputContainer">
-                <label for="Name" class="formInputLabel adjustWidth">Reviewer Name:</label>
-                <div class="formInputElement">
-                    <input type="text" id="reviewsName" name="reviewsName" class="formInput">
-                </div>
-            </div>
+<div id="insert" style="display: none">
+  <h3>Add Review</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="addReview">
+      <div class="formInputContainer">
+        <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
+        <div class="formInputElement">
+          <input type="text" id="recipeName" name="recipeName" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Reviewer" class="formInputLabel adjustWidth">Reviewer:</label>
+        <div class="formInputElement">
+          <input type="text" id="reviewer" name="reviewer" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Rating" class="formInputLabel adjustWidth">Rating:</label>
+        <div class="formInputElement">
+          <input type="number" id="rating" name="rating" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="addCuisine" value="Add">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form>
+  </div>
+</div><!-- insert -->
 
-            <div class="formInputContainer">
-                <label for="Recipe" class="formInputLabel adjustWidth">Recipe Name:</label>
-                <div class="formInputElement">
-                    <input type="text" id="reviewsRecipe" name="reviewsRecipe" class="formInput">
-                </div>
-            </div>
+<div id="updateRecord" style="display: none">
+  <h3>Update Review</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="updateReview">
+      <div class="formInputContainer">
+        <label for="ID" class="formInputLabel adjustWidth">ID:</label>
+        <div class="formInputElement">
+          <input type="text" id="reviewID" name="reviewID" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
+        <div class="formInputElement">
+          <input type="text" id="recipe" name="recipe" class="formInput" >
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Reviewer" class="formInputLabel adjustWidth">Reviewer:</label>
+        <div class="formInputElement">
+          <input type="text" id="reviewer" name="reviewer" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Date" class="formInputLabel adjustWidth">Date:</label>
+        <div class="formInputElement">
+          <input type="text" id="date" name="date" class="formInput">
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Rating" class="formInputLabel adjustWidth">Rating:</label>
+        <div class="formInputElement">
+          <input type="text" id="rating" name="rating" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="UpdateSaveCuisine" value="Update">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form> 
+  </div>
+</div><!-- update -->
 
-            <div class="formInputContainer">
-                <label for="Phone" class="formInputLabel adjustWidth">Rating:</label>
-                <div class="formInputElement">
-                    <input type="number" min="0" max="5" step="0.01" id="reviewsPhone" name="reviewsPhone" class="formInput">
-                </div>
-            </div>
-
-
-            {{!-- not included in our database, but maybe something to consider adding --}}
-            {{!-- <div class="formInputContainer">
-                <label for="Message" class="formInputLabel adjustWidth">Comment:</label>
-                <div class="formInputElement">
-                    <textarea id="reviewsInput" name="reviewsInput" class="formInput" wrap="soft" rows="4"></textarea>
-                </div>
-            </div> --}}
-
-            <div class="formInputContainer">
-                <div class="formInputElement formInputWidth" id="reviewsButtonContainer">
-                    <input type="button" value="Submit" class="buttons" id="reviewsSubmit">
-                </div>
-            </div>
-        </form>
-    </div>
-    <div>
-        <table>
-        <tr>
-            <th class="text-center">Review ID</th>
-            <th class="text-left">Recipe</th>
-            <th class="text-left">Reviewer</th>
-            <th class="text-left">Date</th>
-            <th class="text-left">Rating</th>
-        </tr>
-        <tr>
-            <td class="text-center">1</td>
-            <td class="text-left">Breakfast Burrito</td>
-            <td class="text-left">Bob</td>
-            <td class="text-center">1/20/2025</td>
-            <td class="text-center">4</td>
-        </tr>
-        <tr>
-            <td class="text-center">2</td>
-            <td class="text-left">Pesto Pasta</td>
-            <td class="text-left">Mike</td>
-            <td class="text-center">12/31/2024</td>
-            <td class="text-center">3</td>
-        </tr>
-        <tr>
-            <td class="text-center">3</td>
-            <td class="text-left">Pesto Pasta</td>
-            <td class="text-left">Sara</td>
-            <td class="text-center">2/2/2025</td>
-            <td class="text-center">2</td>
-        </tr>
-        <tr>
-            <td class="text-center">4</td>
-            <td class="text-left">BBQ Pizza</td>
-            <td class="text-left">Andrew</td>
-            <td class="text-center">2/2/2025</td>
-            <td class="text-center">5</td>
-        </tr>
-        <tr>
-            <td class="text-center">5</td>
-            <td class="text-left">Gyro</td>
-            <td class="text-left">Sally</td>
-            <td class="text-center">1/2/2025</td>
-            <td class="text-center">1</td>
-        </tr>
-        </table>
-    </div>
-</div>
-</body>
+<div id="deleteRecord" style="display: none">
+  <h3>Delete Cuisine</h3>
+  <div class="formDiv">
+    <form class="formContainer" id="deleteCuisine">
+      <div class="formInputContainer">
+        <label for="ID" class="formInputLabel adjustWidth">ID:</label>
+        <div class="formInputElement">
+          <input type="text" id="cuisineID" name="cuisineID" class="formInput" disabled>
+        </div>
+      </div>
+      <div class="formInputContainer">
+        <label for="Name" class="formInputLabel adjustWidth">Name:</label>
+        <div class="formInputElement">
+          <input type="text" id="cuisineName" name="cuisineName" class="formInput">
+        </div>
+      </div>
+      <input class="buttons" type="submit" id="DeleteCuisine" value="Delete">
+      <input class="buttons" type="button" value="Cancel" onclick="browse()">
+    </form> 
+  </div>
+</div><!-- delete -->
