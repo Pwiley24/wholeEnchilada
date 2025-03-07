@@ -132,6 +132,7 @@
                             <label for="Cuisine" class="formInputLabel adjustWidth">Cuisine:</label>
                             <div class="formInputElement">
                                 <select id="update_recipe_cuisine" class="formInput">
+                                    <option value = ''></option>
                                     {{#each cuisineList}}
                                     <option value={{cuisine_ID}}>{{name}}</option>
                                     {{/each}}
@@ -166,6 +167,7 @@
                 <div class="recipe-input-element">
                     <label for="modal-cuisine" class="modal-label">Cuisine</label>
                     <select id="modal-cuisine" name="recipe-cuisine" required>
+                        <option value = ''></option>
                         {{#each cuisineList}}
                             <option value={{cuisine_ID}}>{{name}}</option>
                         {{/each}}

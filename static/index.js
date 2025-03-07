@@ -1,4 +1,4 @@
-function addRecord() {
+  function addRecord() {
     document.getElementById("browse").style.display = "none";
     document.getElementById("insert").style.display = "block";
     document.getElementById("updateRecord").style.display = "none";
@@ -17,7 +17,6 @@ function addRecord() {
   }
 
 
-
 /*
  * Function to insert a new recipe into the database. Takes
  * in the elements of a new recipe element.
@@ -27,6 +26,7 @@ function insertNewRecipe() {
     var description = document.getElementById('modal-description').value;
     var selectElement = document.getElementById('modal-cuisine');
     var cuisine_ID = selectElement.value;
+    if (cuisine_ID === '') cuisine_ID = null;
 
     console.log("cuisine id: ", cuisine_ID);
     var ingredients = getIngredientData();
@@ -303,10 +303,8 @@ function deleteRecipe(recipeID) {
 
 // Get the recipe's values to display on the update form and display it
 function updateRecipeValues(recipeID) {
-    var link = '/getRecipeByID/';
-    link += recipeID;
     $.ajax({
-        url: link,
+        url: '/getRecipeByID/'+recipeID,
         type: 'GET',
         success: function(result) {
             console.log(result);
@@ -328,13 +326,12 @@ function updateRecipeValues(recipeID) {
 
 // Update the recipe values in the database to whatever they have been changed to
 function updateRecipe() {
-    
     const data = {
         recipe_ID: document.getElementById("update_recipe_id").value,
         recipe_name: document.getElementById("update_recipe_name").value,
         recipe_description: document.getElementById("update_recipe_description").value,
         cuisine_ID: document.getElementById("update_recipe_cuisine").value
-    };   
+    };
     
     $.ajax({
         url: '/updateRecipe',
@@ -378,6 +375,59 @@ function deleteIngredient(ingredientID) {
         type: 'DELETE',
         success: function(result) {
             location.reload();
+        },
+        error: function(error) {
+            alert(error.responseText);
+        }
+    })
+}
+
+// Get the ingredient's values to display on the update form and display it
+function updateIngredientValues(ingredientID, ingredientName, ingredientCost) {
+    oFormObject = document.forms['updateIngredient'];
+    oFormElement = oFormObject.elements["update_ingredient_id"];
+    oFormElement.value = ingredientID;
+    oFormElement = oFormObject.elements["update_ingredient_name"];
+    oFormElement.value = ingredientName;
+    oFormElement = oFormObject.elements["update_ingredient_cost"];
+    oFormElement.value = ingredientCost;
+    
+    updateRecord();
+}
+
+// Update the recipe values in the database to whatever they have been changed to
+function updateIngredient() {
+    const data = {
+        ingredient_ID: document.getElementById("update_ingredient_id").value,
+        ingredient_name: document.getElementById("update_ingredient_name").value,
+        ingredient_cost: document.getElementById("update_ingredient_cost").value
+    };
+    
+    $.ajax({
+        url: '/updateIngredient',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+
+// Update the ingredient values in the database to whatever they have been changed to
+function addIngredient() {
+    const data = {
+        ingredient_name: document.getElementById("add_ingredient_name").value,
+        ingredient_cost: document.getElementById("add_ingredient_cost").value
+    };
+    
+    $.ajax({
+        url: '/addIngredient',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(result) {
+            location.reload();
         }
     })
 }
@@ -389,6 +439,70 @@ function deleteCookedRecipe(cookedid) {
     $.ajax({
         url: '/deleteCookedRecipe/'+cookedid,
         type: 'DELETE',
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+
+// Get the cooked recipe's values to display on the update form and display it
+function updateCookedRecipeValues(cookedID) {
+    $.ajax({
+        url: '/getCookedRecipeByID/'+cookedID,
+        type: 'GET',
+        success: function(result) {
+            oFormObject = document.forms['updateCookedRecipe'];
+            oFormElement = oFormObject.elements["update_cookedrecipe_id"];
+            oFormElement.value = cookedID;
+            oFormElement = oFormObject.elements["update_cookedrecipe_recipe"];
+            oFormElement.value = result[0]["recipe_ID"];
+            oFormElement = oFormObject.elements["update_cookedrecipe_date"];
+            oFormElement.value = result[0]["timestamp"];
+            oFormElement = oFormObject.elements["update_cookedrecipe_alteration"];
+            oFormElement.value = result[0]["alteration"];
+            oFormElement = oFormObject.elements["update_cookedrecipe_note"];
+            oFormElement.value = result[0]["notes"];
+        }
+    });
+
+    updateRecord();
+}
+
+// Update a cooked recipe
+function updateCookedRecipe() {
+    const data = {
+        cookedrecipe_cooked_ID: document.getElementById("update_cookedrecipe_id").value,
+        cookedrecipe_recipe_ID: document.getElementById("update_cookedrecipe_recipe").value,
+        cookedrecipe_date: document.getElementById("update_cookedrecipe_date").value,
+        cookedrecipe_alteration: document.getElementById("update_cookedrecipe_alteration").value,
+        cookedrecipe_note: document.getElementById("update_cookedrecipe_note").value
+    };
+    
+    $.ajax({
+        url: '/updateCookedRecipe',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+
+// Add a new cooked recipe
+function addCookedRecipe() {
+    const data = {
+        cookedrecipe_recipe_ID: document.getElementById("add_cookedrecipe_recipe").value,
+        cookedrecipe_date: document.getElementById("add_cookedrecipe_date").value,
+        cookedrecipe_alteration: document.getElementById("add_cookedrecipe_alteration").value,
+        cookedrecipe_note: document.getElementById("add_cookedrecipe_note").value
+    };
+    
+    $.ajax({
+        url: '/addCookedRecipe',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
         success: function(result) {
             location.reload();
         }
@@ -407,6 +521,52 @@ function deleteCuisine(cuisineid) {
         }
     })
 }
+
+// Add a cuisine
+function addCuisine() {
+    const data = {
+        cuisine_name: document.getElementById("add_cuisine_name").value
+    };
+    
+    $.ajax({
+        url: '/addCuisine',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+
+// Get the cuisine's values to display on the update form and display it
+function updateCuisineValues(cuisineID, cuisineName) {
+    oFormObject = document.forms['updateCuisine'];
+    oFormElement = oFormObject.elements["update_cuisine_id"];
+    oFormElement.value = cuisineID;
+    oFormElement = oFormObject.elements["update_cuisine_name"];
+    oFormElement.value = cuisineName;
+    
+    updateRecord();
+}
+
+// Update a cuisine
+function updateCuisine() {
+    const data = {
+        cuisine_ID: document.getElementById("update_cuisine_id").value,
+        cuisine_name: document.getElementById("update_cuisine_name").value
+    };
+    
+    $.ajax({
+        url: '/updateCuisine',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
 // #endregion
 
 // #region REVIEWS
@@ -415,6 +575,69 @@ function deleteReview(reviewid) {
     $.ajax({
         url: '/deleteReview/'+reviewid,
         type: 'DELETE',
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+
+// Add a review
+function addReview() {
+    const data = {
+        review_recipe_id: document.getElementById("add_review_recipe").value,
+        review_reviewer: document.getElementById("add_review_reviewer").value,
+        review_rating: document.getElementById("add_review_rating").value,
+    };
+    
+    $.ajax({
+        url: '/addReview',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(result) {
+            location.reload();
+        }
+    })
+}
+
+// Get the review's values to display on the update form and display it
+function updateReviewValues(reviewID) {
+    $.ajax({
+        url: '/getReviewByID/'+reviewID,
+        type: 'GET',
+        success: function(result) {
+            oFormObject = document.forms['updateReview'];
+            oFormElement = oFormObject.elements["update_review_id"];
+            oFormElement.value = reviewID;
+            oFormElement = oFormObject.elements["update_review_recipe"];
+            oFormElement.value = result[0]["recipe_ID"];
+            oFormElement = oFormObject.elements["update_review_date"];
+            oFormElement.value = result[0]["timestamp"];
+            oFormElement = oFormObject.elements["update_review_reviewer"];
+            oFormElement.value = result[0]["reviewer"];
+            oFormElement = oFormObject.elements["update_review_rating"];
+            oFormElement.value = result[0]["rating"];
+        }
+    });
+
+    updateRecord();
+}
+
+// Update a review
+function updateReview() {
+    const data = {
+        review_ID: document.getElementById("update_review_id").value,
+        recipe_ID: document.getElementById("update_review_recipe").value,
+        review_reviewer: document.getElementById("update_review_reviewer").value,
+        review_date: document.getElementById("update_review_date").value,
+        review_rating: document.getElementById("update_review_rating").value
+    };
+    
+    $.ajax({
+        url: '/updateReview',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
         success: function(result) {
             location.reload();
         }

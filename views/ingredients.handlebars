@@ -1,39 +1,40 @@
 <h1>Ingredients</h1>
 <div id="browse" style="display: block">
-<h3>Browse Ingredients</h3>
-<a class="new-btn" href="#" onclick="addRecord()">New</a>
-<table>
-  <tr>
-    {{!-- <th class="text-center"><a href="#" onclick="addRecord()">New</a></th> --}}
-    <th class="text-center">ID</th>
-    <th class="text-left">Name</th>
-    <th class="text-right">Cost (per gram)</th>
-  </tr>
-  {{#each ingredients}}
+  <h3>Browse Ingredients</h3>
+  <a class="new-btn" href="#" onclick="addRecord()">New</a>
+  <table>
     <tr>
-      <td>{{ingredient_ID}}</td>
-      <td>{{name}}</td>
-      <td>{{cost_per_gram}}</td>
-      <td><a href="#" onclick="updateRecord({{ingredient_ID}})">Edit</a></td>
-      <td><a href="#" onclick="deleteIngredient({{ingredient_ID}})">Delete</a></td>
+      {{!-- <th class="text-center"><a href="#" onclick="addRecord()">New</a></th> --}}
+      <th class="text-center">ID</th>
+      <th class="text-left">Name</th>
+      <th class="text-right">Cost (per gram)</th>
     </tr>
-  {{/each}}
-</table><!-- browse -->
+    {{#each ingredients}}
+      <tr>
+        <td>{{ingredient_ID}}</td>
+        <td>{{name}}</td>
+        <td>{{cost_per_gram}}</td>
+        <td><a href="#" onclick="updateIngredientValues({{ingredient_ID}}, '{{name}}', {{cost_per_gram}})">Edit</a></td>
+        <td><a href="#" onclick="deleteIngredient({{ingredient_ID}})">Delete</a></td>
+      </tr>
+    {{/each}}
+  </table>
+</div><!-- browse -->
 
 <div id="insert" style="display: none">
   <h3>Add Ingredient</h3>
   <div class="formDiv">
-    <form class="formContainer" id="addIngredient">
+    <form class="formContainer" id="addIngredient" action="javascript:addIngredient()">
       <div class="formInputContainer">
         <label for="Name" class="formInputLabel">Name:</label>
         <div class="formInputElement">
-          <input type="text" id="ingredientName" name="ingredientName" class="formInput">
+          <input type="text" id="add_ingredient_name" name="ingredientName" class="formInput">
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Cost" class="formInputLabel">Cost (per gram):</label>
         <div class="formInputElement">
-          <input type="number" id="ingredientCost" name="ingredientCost" class="formInput">
+          <input type="number" min="0" step="0.00001" id="add_ingredient_cost" name="ingredientCost" class="formInput">
         </div>
       </div>
       <input class="buttons" type="submit" id="addIngredient" value="Add">
@@ -45,23 +46,23 @@
 <div id="updateRecord" style="display: none">
   <h3>Update Ingredient</h3>
   <div class="formDiv">
-    <form class="formContainer" id="updateIngredient">
+    <form class="formContainer" id="updateIngredient" action="javascript:updateIngredient()">
       <div class="formInputContainer">
         <label for="ID" class="formInputLabel">ID:</label>
         <div class="formInputElement">
-          <input type="text" id="ingredientID" name="ingredientID" class="formInput" disabled>
+          <input type="text" id="update_ingredient_id" name="ingredientID" class="formInput" disabled>
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Name" class="formInputLabel">Name:</label>
         <div class="formInputElement">
-          <input type="text" id="ingredientName" name="ingredientName" class="formInput">
+          <input type="text" id="update_ingredient_name" name="ingredientName" class="formInput">
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Cost" class="formInputLabel">Cost (per gram):</label>
         <div class="formInputElement">
-          <input type="number" id="ingredientCost" name="ingredientCost" class="formInput">
+          <input type="number" min="0" step="0.00001" id="update_ingredient_cost" name="ingredientCost" class="formInput">
         </div>
       </div>
       <input class="buttons" type="submit" id="UpdateSaveIngredient" value="Update">

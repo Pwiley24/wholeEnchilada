@@ -18,7 +18,7 @@
       <td class="text-left">{{review_reviewer}}</td>
       <td class="text-center">{{review_date}}</td>
       <td class="text-right">{{review_rating}}</td>
-      <td><a href="#" onclick="updateRecord({{review_ID}})">Edit</a></td>
+      <td><a href="#" onclick="updateReviewValues({{review_ID}})">Edit</a></td>
       <td><a href="#" onclick="deleteReview({{review_ID}})">Delete</a></td>
     </tr>
     {{/each}}
@@ -28,23 +28,27 @@
 <div id="insert" style="display: none">
   <h3>Add Review</h3>
   <div class="formDiv">
-    <form class="formContainer" id="addReview">
+    <form class="formContainer" id="addReview" action="javascript:addReview()">
       <div class="formInputContainer">
         <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
         <div class="formInputElement">
-          <input type="text" id="recipeName" name="recipeName" class="formInput">
+          <select id="add_review_recipe" class="formInput">
+            {{#each recipeList}}
+            <option value="{{recipe_ID}}">{{name}}</option>
+            {{/each}}
+          </select>
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Reviewer" class="formInputLabel adjustWidth">Reviewer:</label>
         <div class="formInputElement">
-          <input type="text" id="reviewer" name="reviewer" class="formInput">
+          <input type="text" id="add_review_reviewer" name="reviewer" class="formInput">
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Rating" class="formInputLabel adjustWidth">Rating:</label>
         <div class="formInputElement">
-          <input type="number" id="rating" name="rating" class="formInput">
+          <input type="number" id="add_review_rating" min="1" max="5" value="5" name="rating" class="formInput">
         </div>
       </div>
       <input class="buttons" type="submit" id="addCuisine" value="Add">
@@ -56,35 +60,39 @@
 <div id="updateRecord" style="display: none">
   <h3>Update Review</h3>
   <div class="formDiv">
-    <form class="formContainer" id="updateReview">
+    <form class="formContainer" id="updateReview" action="javascript:updateReview()">
       <div class="formInputContainer">
         <label for="ID" class="formInputLabel adjustWidth">ID:</label>
         <div class="formInputElement">
-          <input type="text" id="reviewID" name="reviewID" class="formInput" disabled>
+          <input type="text" id="update_review_id" name="reviewID" class="formInput" disabled>
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
         <div class="formInputElement">
-          <input type="text" id="recipe" name="recipe" class="formInput" >
+          <select id="update_review_recipe" class="formInput">
+            {{#each recipeList}}
+            <option value="{{recipe_ID}}">{{name}}</option>
+            {{/each}}
+          </select>
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Reviewer" class="formInputLabel adjustWidth">Reviewer:</label>
         <div class="formInputElement">
-          <input type="text" id="reviewer" name="reviewer" class="formInput">
+          <input type="text" id="update_review_reviewer" name="reviewer" class="formInput">
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Date" class="formInputLabel adjustWidth">Date:</label>
         <div class="formInputElement">
-          <input type="text" id="date" name="date" class="formInput">
+          <input type="text" id="update_review_date" name="date" class="formInput">
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Rating" class="formInputLabel adjustWidth">Rating:</label>
         <div class="formInputElement">
-          <input type="text" id="rating" name="rating" class="formInput">
+          <input type="number" min="1" max="5" id="update_review_rating" name="rating" class="formInput">
         </div>
       </div>
       <input class="buttons" type="submit" id="UpdateSaveCuisine" value="Update">

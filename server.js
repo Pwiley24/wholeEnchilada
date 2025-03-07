@@ -117,7 +117,7 @@ app.get('/getRecipeById/:recipeid', function(req, res, next) {
 // Update a recipe, pass recipe_ID, name, description, and cuisine_ID through the body
 app.put('/updateRecipe', function(req, res, next) {
     const recipe_id = parseInt(req.body.recipe_ID);
-    const cuisine_id = parseInt(req.body.cuisine_ID);
+    const cuisine_id = parseInt(req.body.cuisine_ID) || null;
 
     pool.getConnection((err, connection) => {
         if (err) throw err;
@@ -163,12 +163,49 @@ app.get('/getIngredientList', function(req, res) {
 app.delete('/deleteIngredient/:ingredientid', function(req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
-        pool.query("DELETE FROM Ingredients WHERE ingredient_ID = ?", [req.params.ingredientid], (err, results) => {
+        pool.query("SELECT * FROM IngredientsOfRecipes WHERE ingredient_ID = ?", [req.params.ingredientid], (err, results) => {
+            if (err) throw err;
+            if (results.length === 0) {
+                pool.query("DELETE FROM Ingredients WHERE ingredient_ID = ?", [req.params.ingredientid], (err, results) => {
+                    if (err) res.send(err);
+                    res.sendStatus(204);
+                });
+            }
+            else {
+                res.status(500).send("Ingredient is used by at least one recipe.");
+            }
+        });
+
+        connection.release();
+    })
+});
+
+// Update an ingredient, pass ingredient_ID, name, and cost through the body
+app.put('/updateIngredient', function(req, res, next) {
+    const ingredient_id = parseInt(req.body.ingredient_ID);
+
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("UPDATE Ingredients SET name = ?, cost_per_gram = ? WHERE ingredient_ID = ?", [req.body.ingredient_name, req.body.ingredient_cost, ingredient_id], (err, results) => {
             if (err) throw err;
         });
         connection.release();
-        res.sendStatus(204);
-    })
+    });
+
+    res.status(200).send();
+});
+
+// Add an ingredient
+app.post('/addIngredient', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("INSERT INTO Ingredients (name, cost_per_gram) VALUES (?, ?)", [req.body.ingredient_name, req.body.ingredient_cost], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+    });
+
+    res.status(200).send();
 });
 // #endregion
 
@@ -178,9 +215,21 @@ app.get('/cookedRecipes', function (req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
-        pool.query("SELECT cr.cooked_ID, r.name AS 'recipe_name', DATE_FORMAT(cr.timestamp, '%Y-%m-%d') as 'cooked_date', IFNULL(cr.alteration, '') as 'cooked_alteration', IFNULL(cr.notes, '') as 'cooked_notes' FROM CookedRecipes cr JOIN Recipes r on cr.recipe_ID = r.recipe_ID;", (err, results, fields) => {
+        pool.query("SELECT cr.cooked_ID, r.name AS 'recipe_name', DATE_FORMAT(cr.timestamp, '%Y-%m-%d') as 'cooked_date', IFNULL(cr.alteration, '') as 'cooked_alteration', IFNULL(cr.notes, '') as 'cooked_notes' FROM CookedRecipes cr JOIN Recipes r on cr.recipe_ID = r.recipe_ID; SELECT recipe_ID, name FROM Recipes;", (err, results, fields) => {
             if (err) throw err;
-            res.status(200).render("cookedRecipes", {cookedRecipes: results});
+            res.status(200).render("cookedRecipes", {cookedRecipes: results[0], recipeList: results[1]});
+        });
+        connection.release();
+    });
+});
+
+// Get a single cooked recipe by ID
+app.get('/getCookedRecipeById/:recipeid', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("SELECT cooked_ID, recipe_ID, DATE_FORMAT(timestamp, '%Y-%m-%d') as 'timestamp', alteration, notes FROM CookedRecipes WHERE cooked_ID = ?", [req.params.recipeid], (err, results) => {
+            if (err) throw err;
+            res.status(200).send(results);
         });
         connection.release();
     });
@@ -196,6 +245,40 @@ app.delete('/deleteCookedRecipe/:cookedid', function(req, res, next) {
         connection.release();
         res.sendStatus(204);
     })
+});
+
+// Add a cooked recipe
+app.post('/addCookedRecipe', function(req, res, next) {
+    var alteration = req.body.cookedrecipe_alteration;
+    var note = req.body.cookedrecipe_note;
+    
+    if (alteration === '') alteration = null;
+    if (note === '') note = null;
+
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("INSERT INTO CookedRecipes (recipe_ID, timestamp, alteration, notes) VALUES (?, ?, ?, ?)", [req.body.cookedrecipe_recipe_ID, req.body.cookedrecipe_date, alteration, note], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+    });
+
+    res.status(200).send();
+});
+
+// Update a cooked recipe
+app.put('/updateCookedRecipe', function(req, res, next) {
+    const cookedrecipe_id = parseInt(req.body.cookedrecipe_cooked_ID);
+
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("UPDATE CookedRecipes SET recipe_ID = ?, timestamp = ?, alteration = ?, notes = ? WHERE cooked_ID = ?", [req.body.cookedrecipe_recipe_ID, req.body.cookedrecipe_date, req.body.cookedrecipe_alteration, req.body.cookedrecipe_note, cookedrecipe_id], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+    });
+
+    res.status(200).send();
 });
 // #endregion
 
@@ -240,6 +323,34 @@ app.delete('/deleteCuisine/:cuisineid', function(req, res, next) {
         res.sendStatus(204);
     })
 });
+
+// Update a cuisine
+app.put('/updateCuisine', function(req, res, next) {
+    const cuisine_id = parseInt(req.body.cuisine_ID);
+
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("UPDATE Cuisines SET name = ? WHERE cuisine_ID = ?", [req.body.cuisine_name, cuisine_id], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+    });
+
+    res.status(200).send();
+});
+
+// Add a cuisine
+app.post('/addCuisine', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("INSERT INTO Cuisines (name) VALUES (?)", [req.body.cuisine_name], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+    });
+
+    res.status(200).send();
+});
 // #endregion
 
 // #region REVIEWS
@@ -248,9 +359,21 @@ app.get('/reviews', function (req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
-        pool.query("SELECT rv.review_ID, r.name AS 'recipe_name', reviewer AS 'review_reviewer', DATE_FORMAT(timestamp, '%Y-%m-%d') AS 'review_date', rating as 'review_rating' FROM Reviews rv JOIN Recipes r ON rv.recipe_ID = r.recipe_ID;", (err, results, fields) => {
+        pool.query("SELECT rv.review_ID, r.name AS 'recipe_name', reviewer AS 'review_reviewer', DATE_FORMAT(timestamp, '%Y-%m-%d') AS 'review_date', rating as 'review_rating' FROM Reviews rv JOIN Recipes r ON rv.recipe_ID = r.recipe_ID; SELECT recipe_ID, name FROM Recipes", (err, results, fields) => {
             if (err) throw err;
-            res.status(200).render("reviews", {reviews: results});
+            res.status(200).render("reviews", {reviews: results[0], recipeList: results[1]});
+        });
+        connection.release();
+    });
+});
+
+// Get a single cooked recipe by ID
+app.get('/getReviewById/:reviewid', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("SELECT review_ID, recipe_ID, reviewer, DATE_FORMAT(timestamp, '%Y-%m-%d') as 'timestamp', rating FROM Reviews WHERE review_ID = ?", [req.params.reviewid], (err, results) => {
+            if (err) throw err;
+            res.status(200).send(results);
         });
         connection.release();
     });
@@ -266,6 +389,35 @@ app.delete('/deleteReview/:reviewid', function(req, res, next) {
         connection.release();
         res.sendStatus(204);
     })
+});
+
+// Add a review
+app.post('/addReview', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("INSERT INTO Reviews (recipe_ID, reviewer, timestamp, rating) VALUES (?, ?, CURDATE(), ?)", [req.body.review_recipe_id, req.body.review_reviewer, req.body.review_rating], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+    });
+
+    res.status(200).send();
+});
+
+// Update a review
+app.put('/updateReview', function(req, res, next) {
+    const review_id = parseInt(req.body.review_ID);
+    const recipe_id = parseInt(req.body.recipe_ID);
+
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        pool.query("UPDATE Reviews SET recipe_ID = ?, reviewer = ?, timestamp = ?, rating = ? WHERE review_ID = ?", [recipe_id, req.body.review_reviewer, req.body.review_date, req.body.review_rating, review_id], (err, results) => {
+            if (err) throw err;
+        });
+        connection.release();
+    });
+
+    res.status(200).send();
 });
 // #endregion
 

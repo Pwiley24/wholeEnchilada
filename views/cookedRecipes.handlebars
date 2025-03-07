@@ -19,7 +19,7 @@
         <td class="text-center">{{cooked_date}}</td>
         <td class="text-left">{{cooked_alteration}}</td>
         <td class="text-left">{{cooked_notes}}</td>
-        <td><a href="#" onclick="updateRecord({{cooked_ID}})">Edit</a></td>
+        <td><a href="#" onclick="updateCookedRecipeValues({{cooked_ID}})">Edit</a></td>
         <td><a href="#" onclick="deleteCookedRecipe({{cooked_ID}})">Delete</a></td>
       </tr>
       {{/each}}
@@ -30,35 +30,34 @@
 <div id="insert" style="display: none">
   <h3>Add Cooked Recipe</h3>
   <div class="formDiv">
-    <form class="formContainer" id="addCookedRecipe">
+    <form class="formContainer" id="addCookedRecipe" action="javascript:addCookedRecipe()">
       <div class="formInputContainer">
         <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
         <div class="formInputElement">
-          <select id="recipe" class="formInput">
-            <option value="1">Orange Chicken</option>
-            <option value="2">BBQ Pizza</option>
-            <option value="3">Pesto Pasta</option>
-            <option value="4">Gyro</option>
-            <option value="5">Breakfast Burrito</option>
+          <select id="add_cookedrecipe_recipe" class="formInput">
+            {{#each recipeList}}
+            <option value="{{recipe_ID}}">{{name}}</option>
+            {{/each}}
           </select>
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Date" class="formInputLabel adjustWidth">Date:</label>
         <div class="formInputElement">
-          <input type="date" id="date" name="date" class="formInput">
+          <input type="date" id="add_cookedrecipe_date" name="date" class="formInput">
+          <script>document.getElementById('add_cookedrecipe_date').valueAsDate = new Date();</script>
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Alterations" class="formInputLabel adjustWidth">Alteration(s):</label>
         <div class="formInputElement">
-          <input type="text" id="alterations" name="alterations" class="formInput">
+          <input type="text" id="add_cookedrecipe_alteration" name="alterations" class="formInput">
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Notes" class="formInputLabel adjustWidth">Note(s):</label>
         <div class="formInputElement">
-          <input type="text" id="notes" name="notes" class="formInput">
+          <input type="text" id="add_cookedrecipe_note" name="notes" class="formInput">
         </div>
       </div>
       <input class="buttons" type="submit" id="addCookedRecipe" value="Add">
@@ -70,35 +69,39 @@
 <div id="updateRecord" style="display: none">
   <h3>Update Cooked Recipe</h3>
   <div class="formDiv">
-    <form class="formContainer" id="updateCookedRecipe">
+    <form class="formContainer" id="updateCookedRecipe" action="javascript:updateCookedRecipe()">
+      <div class="formInputContainer">
+        <label for="ID" class="formInputLabel adjustWidth">ID:</label>
+        <div class="formInputElement">
+          <input type="text" id="update_cookedrecipe_id" name="cookedrecipeID" class="formInput" disabled>
+        </div>
+      </div>
       <div class="formInputContainer">
         <label for="Recipe" class="formInputLabel adjustWidth">Recipe:</label>
         <div class="formInputElement">
-          <select id="recipe" class="formInput">
-            <option value="1">Orange Chicken</option>
-            <option value="2">BBQ Pizza</option>
-            <option value="3">Pesto Pasta</option>
-            <option value="4">Gyro</option>
-            <option value="5">Breakfast Burrito</option>
+          <select id="update_cookedrecipe_recipe" class="formInput">
+            {{#each recipeList}}
+            <option value="{{recipe_ID}}">{{name}}</option>
+            {{/each}}
           </select>
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Date" class="formInputLabel adjustWidth">Date:</label>
         <div class="formInputElement">
-          <input type="date" id="date" name="date" class="formInput">
+          <input type="date" id="update_cookedrecipe_date" name="date" class="formInput">
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Alterations" class="formInputLabel adjustWidth">Alteration(s):</label>
         <div class="formInputElement">
-          <input type="text" id="alterations" name="alterations" class="formInput">
+          <input type="text" id="update_cookedrecipe_alteration" name="alterations" class="formInput">
         </div>
       </div>
       <div class="formInputContainer">
         <label for="Notes" class="formInputLabel adjustWidth">Note(s):</label>
         <div class="formInputElement">
-          <input type="text" id="notes" name="notes" class="formInput">
+          <input type="text" id="update_cookedrecipe_note" name="notes" class="formInput">
         </div>
       </div>
       <input class="buttons" type="submit" id="updateCookedRecipe" value="Update">
