@@ -8,7 +8,7 @@ var exphbs = require('express-handlebars');
 var fs = require('fs');
 var Handlebars = require('handlebars');
 var bodyParser = require('body-parser');
-var port = process.env.PORT || 3053;
+var port = process.env.PORT || 3063;
 
 const mysql = require('mysql2');
 const pool = mysql.createPool({
@@ -99,6 +99,32 @@ app.get('/getRecipeIngredientsById/:recipeid', function(req, res, next) {
             res.status(200).send(results);
         });
         connection.release();
+    });
+});
+
+app.get('/getRecipeRatingsById/:recipeid', function(req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        // Query to fetch all ratings for a specific recipe_id
+        pool.query(`
+            SELECT rw.rating
+            FROM Reviews rw
+            WHERE rw.recipe_id = ?`, 
+            [req.params.recipeid], 
+            (err, results) => {
+                if (err) throw err;
+                console.log("results: ", results);
+                // Check if we got any ratings, otherwise handle the case
+                if (results.length > 0) {
+                    res.status(200).json(results);  // Return the list of ratings
+                } else {
+                    res.status(404).json({ message: "No ratings found for this recipe." });
+                }
+            }
+        );
+
+        connection.release();  // Release the connection back to the pool
     });
 });
 
@@ -504,4 +530,3 @@ app.get('*', function (req, res, next) {
 app.listen(port, function () {
     console.log("== Server is listening on port", port);
 });
-

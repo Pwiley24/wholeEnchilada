@@ -1,4 +1,4 @@
-  function addRecord() {
+function addRecord() {
     document.getElementById("browse").style.display = "none";
     document.getElementById("insert").style.display = "block";
     document.getElementById("updateRecord").style.display = "none";
@@ -343,6 +343,69 @@ function updateRecipe() {
         }
     })
 }
+
+
+// For displaying the average rating of one recipe
+function getSelectedRecipeAvgRating(recipeID) {
+    var link = '/getRecipeRatingsById/';
+    link += recipeID;
+
+    $.ajax({
+        url: link,
+        type: 'GET',
+        success: function(result) {
+            var averageRating;
+            // Calculate the average rating if there are ratings
+            if (result.length > 0) {
+                var sumOfRatings = result.reduce((acc, current) => acc + parseFloat(current.rating), 0);
+                averageRating = (sumOfRatings / result.length).toFixed(2);  // Calculate the average
+            } else {
+                averageRating = 0;
+            }
+
+            const singleRecipeDiv = document.getElementById("single-recipe");
+
+            const existingAvgRatingDiv = singleRecipeDiv.querySelector('.recipe-avg-rating');
+            if (existingAvgRatingDiv) {
+                singleRecipeDiv.removeChild(existingAvgRatingDiv);
+            }
+
+            // Create a new div to display the average rating
+            const avgRatingDiv = document.createElement('div');
+            avgRatingDiv.classList.add('recipe-avg-rating'); // Optional: add a class for styling
+            avgRatingDiv.textContent = `Average Rating: ${averageRating}`;
+
+            // Append the new div at the end of the "single-recipe" div
+            singleRecipeDiv.appendChild(avgRatingDiv);
+
+            singleRecipeDiv.style.display = "block";
+        },
+        error: function(xhr, status, error) {
+            // Check for a 404 error
+            if (xhr.status === 404) {
+                const singleRecipeDiv = document.getElementById("single-recipe");
+
+                // Remove any existing average rating divs
+                const existingAvgRatingDiv = singleRecipeDiv.querySelector('.recipe-avg-rating');
+                if (existingAvgRatingDiv) {
+                    singleRecipeDiv.removeChild(existingAvgRatingDiv);
+                }
+
+                // Create a new div to display "No reviews"
+                const noReviewsDiv = document.createElement('div');
+                noReviewsDiv.classList.add('recipe-avg-rating');
+                noReviewsDiv.textContent = "No reviews";
+
+                // Append the "No reviews" message
+                singleRecipeDiv.appendChild(noReviewsDiv);
+
+                singleRecipeDiv.style.display = "block";
+            }
+        }
+    });
+}
+
+
 
 // For displaying the ingredients of one recipe
 function getSelectedRecipeIngredients(recipeID, recipeName) {

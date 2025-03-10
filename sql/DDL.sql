@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `Recipes` (
   `recipe_ID` INT NOT NULL AUTO_INCREMENT UNIQUE,     -- PK
   `name` VARCHAR(50) NULL,
   `description` VARCHAR(250) NULL,
-  `cuisine_ID` INT NULL,                          -- FK
+  `cuisine_ID` INT NULL,                              -- FK
   PRIMARY KEY (`recipe_ID`),
   INDEX `cuisine_ID_idx` (`cuisine_ID` ASC),          -- Creates an Index for the cuisine_ID for quicker lookup
   CONSTRAINT `cuisine_ID_fk_recipes`

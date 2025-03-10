@@ -1,3 +1,5 @@
+<script src="index.js"></script>
+
     <div>
         <div class="recipes-all-content">
             <div id="recipes-filter-container">
@@ -23,41 +25,8 @@
                 </div>
 
                 <div class="filter-input-container">
-                    <label for="filter-rating" class="filter-input-label">Rating</label>
-                    <div class="filter-input-element">
-                        <div class="checkbox-text">
-                            <input type="checkbox" id="filter-1" class="filter-input-checkbox" name="filter-1">
-                            <label for="filter-1">Between 0-1</label>
-                        </div>
-                        <div class="checkbox-text">
-                            <input type="checkbox" id="filter-2" class="filter-input-checkbox" name="filter-2">
-                            <label for="filter-2">Between 1-2</label>
-                        </div>
-                        <div class="checkbox-text">
-                            <input type="checkbox" id="filter-3" class="filter-input-checkbox" name="filter-3">
-                            <label for="filter-3">Between 2-3</label>
-                        </div>
-                        <div class="checkbox-text">
-                            <input type="checkbox" id="filter-4" class="filter-input-checkbox" name="filter-4">
-                            <label for="filter-4">Between 3-4</label>
-                        </div>
-                        <div class="checkbox-text">
-                            <input type="checkbox" id="filter-5" class="filter-input-checkbox" name="filter-5">
-                            <label for="filter-5">Between 4-5</label>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="filter-input-container">
                     <div id="updateButtonContainer" class="filter-input-element">
-                        <button id="filter-update-button" type="button" class="filter-buttons">Update</button>
-                    </div>
-                </div>
-                <div class="filter-input-container">
-                    <div id="newRecipeButtonContainer" class="filter-input-element">
-                        <button type="button" id="add-recipe-button" class="filter-buttons">New</button>
+                        <button id="filter-update-button" type="button" class="filter-buttons">Search</button>
                     </div>
                 </div>
 
@@ -67,8 +36,14 @@
                 <div class="testimonial-header">
                     <h1>Recipes</h1>
                 </div>
+
+                <div class="filter-input-container">
+                    <div id="newRecipeButtonContainer">
+                        <button type="button" id="add-recipe-button" class="new-btn">New</button>
+                    </div>
+                </div>
             
-                <div id="browse" style="display: block"> {{!-- this will be something to implement with our database --}}
+                <div id="browse" style="display: block">
                     <table id="recipe-table">
                         <tbody id="recipe-container">
                             <tr>
@@ -80,7 +55,7 @@
                             {{#each recipes}}
                             <tr data-value="{{recipe_ID}}">
                                 <td class="text-center">{{recipe_ID}}</td>
-                                <td class="text-center "><a href="#" onclick="getSelectedRecipeIngredients({{recipe_ID}}, '{{recipe_name}}')">{{recipe_name}}</a></td>
+                                <td class="text-center "><a href="#" onclick="getSelectedRecipeIngredients({{recipe_ID}}, '{{recipe_name}}'); getSelectedRecipeAvgRating({{recipe_ID}})">{{recipe_name}}</a></td>
                                 <td class="text-left">{{recipe_description}}</td>
                                 <td class="text-left" id ="filter-cuisine">{{cuisine_name}}</td>
                                 <td><a href="#" onclick="updateRecipeValues({{recipe_ID}})">Edit</a></td>
@@ -97,6 +72,11 @@
                             <div class="recipe-ingredients">
                                 <h3>Ingredients:</h3>
                                 <ul id="selected-recipe-ingredient-list">
+                                </ul>
+                            </div>
+                            <div class="recipe-rating">
+                                <h3>Rating:</h3>
+                                <ul id="selected-recipe-avg-rating">
                                 </ul>
                             </div>
                         </div>
@@ -154,7 +134,6 @@
             <div class="modal-dialog">
                 <div class="modal-header">
                     <h3>Add a new recipe to the website!</h3>
-                    <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
                 </div>
 
     <div class="modal-body">
@@ -191,15 +170,14 @@
                             <option value="tsp">tsp</option>
                             <option value="slices">slices</option>
                         </select>
-                        <button type="button" class="remove-ingredient">Remove</button>
                     </div>
                 </div>
 
                 <button type="button" id="add-ingredient">Add Ingredient</button>
 
                 <div class="recipe-input-element">
-                    <label for="modal-description" class="modal-label">Instructions</label>
-                    <textarea id="modal-description" rows="4" placeholder="Enter recipe instructions..."></textarea>
+                    <label for="modal-description" class="modal-label">Description</label>
+                    <textarea id="modal-description" rows="4" placeholder="Enter recipe description..."></textarea>
                 </div>
 
 
