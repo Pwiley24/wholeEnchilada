@@ -102,11 +102,10 @@ app.get('/getRecipeIngredientsById/:recipeid', function(req, res, next) {
     });
 });
 
+// Get a single recipe's ratings by ID
 app.get('/getRecipeRatingsById/:recipeid', function(req, res, next) {
     pool.getConnection((err, connection) => {
         if (err) throw err;
-
-        // Query to fetch all ratings for a specific recipe_id
         pool.query(`
             SELECT rw.rating
             FROM Reviews rw
@@ -115,16 +114,15 @@ app.get('/getRecipeRatingsById/:recipeid', function(req, res, next) {
             (err, results) => {
                 if (err) throw err;
                 console.log("results: ", results);
-                // Check if we got any ratings, otherwise handle the case
                 if (results.length > 0) {
-                    res.status(200).json(results);  // Return the list of ratings
+                    res.status(200).json(results); 
                 } else {
                     res.status(404).json({ message: "No ratings found for this recipe." });
                 }
             }
         );
 
-        connection.release();  // Release the connection back to the pool
+        connection.release(); 
     });
 });
 

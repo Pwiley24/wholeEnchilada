@@ -157,6 +157,14 @@ function recipePassesFilters(recipe, filters) {
     return filterVals;
 }
 
+function confirmDeletion(){
+    let userResponse = confirm("Are you sure you want to delete this item?");
+    if (userResponse) {
+        return true;
+    }
+    return false;
+}
+
 /*
  * Applies the filters currently entered by the user to the set of all recipes.
  * Any recipe that satisfies the user's filter values will be displayed,
@@ -292,13 +300,15 @@ if (modalAddButton) {
 // #region RECIPES
 // Delete a recipe
 function deleteRecipe(recipeID) {
-    $.ajax({
-        url: '/deleteRecipe/'+recipeID,
-        type: 'DELETE',
-        success: function(result) {
-            location.reload();
-        }
-    })
+    if(confirmDeletion()){
+        $.ajax({
+            url: '/deleteRecipe/'+recipeID,
+            type: 'DELETE',
+            success: function(result) {
+                location.reload();
+            }
+        })
+    }
 }
 
 // Get the recipe's values to display on the update form and display it
@@ -355,55 +365,34 @@ function getSelectedRecipeAvgRating(recipeID) {
         type: 'GET',
         success: function(result) {
             var averageRating;
-            // Calculate the average rating if there are ratings
             if (result.length > 0) {
                 var sumOfRatings = result.reduce((acc, current) => acc + parseFloat(current.rating), 0);
-                averageRating = (sumOfRatings / result.length).toFixed(2);  // Calculate the average
+                averageRating = (sumOfRatings / result.length).toFixed(2); // round to two decimal places
             } else {
-                averageRating = 0;
+                averageRating = "None"; 
             }
 
-            const singleRecipeDiv = document.getElementById("single-recipe");
+            const avgRatingList = document.getElementById("selected-recipe-avg-rating");
 
-            const existingAvgRatingDiv = singleRecipeDiv.querySelector('.recipe-avg-rating');
-            if (existingAvgRatingDiv) {
-                singleRecipeDiv.removeChild(existingAvgRatingDiv);
-            }
+            avgRatingList.innerHTML = '';
 
-            // Create a new div to display the average rating
-            const avgRatingDiv = document.createElement('div');
-            avgRatingDiv.classList.add('recipe-avg-rating'); // Optional: add a class for styling
-            avgRatingDiv.textContent = `Average Rating: ${averageRating}`;
+            const avgRatingItem = document.createElement('li');
+            avgRatingItem.textContent = `Average Rating: ${averageRating}`;
 
-            // Append the new div at the end of the "single-recipe" div
-            singleRecipeDiv.appendChild(avgRatingDiv);
+            avgRatingList.appendChild(avgRatingItem);
 
-            singleRecipeDiv.style.display = "block";
+            document.getElementById("single-recipe").style.display = "block";
         },
-        error: function(xhr, status, error) {
-            // Check for a 404 error
-            if (xhr.status === 404) {
-                const singleRecipeDiv = document.getElementById("single-recipe");
-
-                // Remove any existing average rating divs
-                const existingAvgRatingDiv = singleRecipeDiv.querySelector('.recipe-avg-rating');
-                if (existingAvgRatingDiv) {
-                    singleRecipeDiv.removeChild(existingAvgRatingDiv);
-                }
-
-                // Create a new div to display "No reviews"
-                const noReviewsDiv = document.createElement('div');
-                noReviewsDiv.classList.add('recipe-avg-rating');
-                noReviewsDiv.textContent = "No reviews";
-
-                // Append the "No reviews" message
-                singleRecipeDiv.appendChild(noReviewsDiv);
-
-                singleRecipeDiv.style.display = "block";
-            }
+        error: function() {
+            const avgRatingList = document.getElementById("selected-recipe-avg-rating");
+            avgRatingList.innerHTML = ''; 
+            const errorItem = document.createElement('li');
+            errorItem.textContent = "No reviews available.";
+            avgRatingList.appendChild(errorItem);
         }
     });
 }
+
 
 
 
@@ -433,16 +422,18 @@ function getSelectedRecipeIngredients(recipeID, recipeName) {
 // #region INGREDIENTS
 // Delete an Ingredient
 function deleteIngredient(ingredientID) {
-    $.ajax({
-        url: '/deleteIngredient/'+ingredientID,
-        type: 'DELETE',
-        success: function(result) {
-            location.reload();
-        },
-        error: function(error) {
-            alert(error.responseText);
-        }
-    })
+    if(confirmDeletion()){
+        $.ajax({
+            url: '/deleteIngredient/'+ingredientID,
+            type: 'DELETE',
+            success: function(result) {
+                location.reload();
+            },
+            error: function(error) {
+                alert(error.responseText);
+            }
+        })
+    }
 }
 
 // Get the ingredient's values to display on the update form and display it
@@ -499,13 +490,15 @@ function addIngredient() {
 // #region COOKED RECIPES
 // Delete a cooked recipe
 function deleteCookedRecipe(cookedid) {
-    $.ajax({
-        url: '/deleteCookedRecipe/'+cookedid,
-        type: 'DELETE',
-        success: function(result) {
-            location.reload();
-        }
-    })
+    if(confirmDeletion()){
+        $.ajax({
+            url: '/deleteCookedRecipe/'+cookedid,
+            type: 'DELETE',
+            success: function(result) {
+                location.reload();
+            }
+        })
+    }
 }
 
 // Get the cooked recipe's values to display on the update form and display it
@@ -576,13 +569,15 @@ function addCookedRecipe() {
 // #region CUISINES
 // Delete a cuisine
 function deleteCuisine(cuisineid) {
-    $.ajax({
-        url: '/deleteCuisine/'+cuisineid,
-        type: 'DELETE',
-        success: function(result) {
-            location.reload();
-        }
-    })
+    if(confirmDeletion()){
+        $.ajax({
+            url: '/deleteCuisine/'+cuisineid,
+            type: 'DELETE',
+            success: function(result) {
+                location.reload();
+            }
+        })
+    }
 }
 
 // Add a cuisine
@@ -635,13 +630,15 @@ function updateCuisine() {
 // #region REVIEWS
 // Delete a review
 function deleteReview(reviewid) {
-    $.ajax({
-        url: '/deleteReview/'+reviewid,
-        type: 'DELETE',
-        success: function(result) {
-            location.reload();
-        }
-    })
+    if(confirmDeletion()){
+        $.ajax({
+            url: '/deleteReview/'+reviewid,
+            type: 'DELETE',
+            success: function(result) {
+                location.reload();
+            }
+        })
+    }
 }
 
 // Add a review

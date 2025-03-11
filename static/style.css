@@ -216,6 +216,10 @@ p {
 
 }
 
+footer {
+    height: 100px;
+}
+
 .filter-input {
     font-size: 14px;
     min-width: 100%;
