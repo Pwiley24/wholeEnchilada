@@ -1,3 +1,11 @@
+{{!-- 
+    Citation for the following functions:
+        table structure, hidden forms, and buttons
+    Date: 03/16/2025
+    Based on:
+    Source URL: https://canvas.oregonstate.edu/courses/1987790/pages/exploration-developing-in-node-dot-js?module_item_id=25023025 
+--}}
+
 <script src="index.js"></script>
 
     <div>
@@ -55,7 +63,7 @@
                             {{#each recipes}}
                             <tr data-value="{{recipe_ID}}">
                                 <td class="text-center">{{recipe_ID}}</td>
-                                <td class="text-center "><a href="#" onclick="getSelectedRecipeIngredients({{recipe_ID}}, '{{recipe_name}}'); getSelectedRecipeAvgRating({{recipe_ID}})">{{recipe_name}}</a></td>
+                                <td class="text-center "><a href="#" onclick="getSelectedRecipeIngredients({{recipe_ID}}, '{{recipe_name}}'); getSelectedRecipeAvgRating({{recipe_ID}});">{{recipe_name}}</a></td>
                                 <td class="text-left">{{recipe_description}}</td>
                                 <td class="text-left" id ="filter-cuisine">{{cuisine_name}}</td>
                                 <td><a href="#" onclick="updateRecipeValues({{recipe_ID}})">Edit</a></td>

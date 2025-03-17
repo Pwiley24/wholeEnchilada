@@ -1,3 +1,9 @@
+// Citation for the following functions:
+//      addRecord(), updateRecord(), browse()
+// Date: 03/16/2025
+// Based on:
+// Source URL: https://canvas.oregonstate.edu/courses/1987790/pages/exploration-developing-in-node-dot-js?module_item_id=25023025
+
 function addRecord() {
     document.getElementById("browse").style.display = "none";
     document.getElementById("insert").style.display = "block";
@@ -14,6 +20,11 @@ function addRecord() {
     document.getElementById("browse").style.display = "block";
     document.getElementById("insert").style.display = "none";
     document.getElementById("updateRecord").style.display = "none";
+  }
+
+  function scrollToRecipe() {
+    const element = document.getElementById("single-recipe");
+    element.scrollIntoView({ behavior: 'smooth' });
   }
 
 
@@ -357,11 +368,8 @@ function updateRecipe() {
 
 // For displaying the average rating of one recipe
 function getSelectedRecipeAvgRating(recipeID) {
-    var link = '/getRecipeRatingsById/';
-    link += recipeID;
-
     $.ajax({
-        url: link,
+        url: '/getRecipeRatingsById/'+recipeID,
         type: 'GET',
         success: function(result) {
             var averageRating;
@@ -398,25 +406,80 @@ function getSelectedRecipeAvgRating(recipeID) {
 
 // For displaying the ingredients of one recipe
 function getSelectedRecipeIngredients(recipeID, recipeName) {
-    var link = '/getRecipeIngredientsByID/';
-    link += recipeID;
+    let ingredientList;
     $.ajax({
-        url: link,
+        url: '/getIngredientList',
         type: 'GET',
         success: function(result) {
-            const selectedRecipeName = document.getElementById('selected-recipe-title');
-            selectedRecipeName.innerHTML = recipeName;
-            const selectedRecipeIngredientList = document.getElementById('selected-recipe-ingredient-list');
-            selectedRecipeIngredientList.innerHTML = '';
-            result.forEach(ingredient => {
-                const li = document.createElement("li");
-                li.textContent = ingredient.ingredient_qty+' '+ingredient.ingredient_qty_display_uom+' of '+ingredient.ingredient_name;
-                selectedRecipeIngredientList.appendChild(li);
+            ingredientList = JSON.parse(JSON.stringify(result));
+            
+            $.ajax({
+                url: '/getRecipeIngredientsByID/'+recipeID,
+                type: 'GET',
+                success: function(result) {
+                    const selectedRecipeName = document.getElementById('selected-recipe-title');
+                    selectedRecipeName.innerHTML = recipeName;
+                    const selectedRecipeIngredientList = document.getElementById('selected-recipe-ingredient-list');
+                    selectedRecipeIngredientList.innerHTML = '';
+        
+                    result.forEach(ingredient => {
+                        const li = document.createElement("li");
+                        const ingredientID = ingredient.ingredient_ID;
+                        const liID = 'recipe-ingredient-li-'+recipeID+'-'+ingredientID;
+                        li.id = liID;
+                        li.textContent = ingredient.ingredient_qty+' '+ingredient.ingredient_qty_display_uom+' of '+ingredient.ingredient_name;
+                        li.innerHTML += '<button class="recipe-ingredient-button" type="button">Edit</button><button class="recipe-ingredient-button" type="button" onclick="deleteIngredientOfRecipe('+ingredient.recipe_ID+', '+ingredient.ingredient_ID+', &quot;'+recipeName+'&quot;)">Delete</button>';
+                        const liForm = document.createElement("form");
+                        liForm.className = "recipe-ingredient-form";
+                        liForm.id = 'updateIngredientOfRecipe-'+recipeID+'-'+ingredientID;
+                        liForm.action = "javascript:updateIngredientOfRecipe()";
+                        // li.innerHTML += '<form class="recipe-ingredient-form" id="updateIngredientOfRecipe-'+recipeID+'-'+ingredientID+' action="javascript:updateIngredientOfRecipe()">';
+                        liForm.innerHTML += '<label for="RecipeID" style="display: none">Recipe ID:</label><input class="recipe-ingredient-input" type="text" id="updateRecipeIngredient-recipeID-'+recipeID+'-'+ingredientID+'" name="recipeID" value="'+recipeID+'" disabled style="display: none">';
+                        liForm.innerHTML += '<label for="IngredientID" style="display: none">Ingredient ID:</label><input class="recipe-ingredient-input" type="text" id="updateRecipeIngredient-ingredientID-'+recipeID+'-'+ingredientID+'" name="ingredientID" value="'+ingredientID+'" disabled style="display: none">';
+                        liForm.innerHTML += '<label for="IngredientQty">Qty:</label><input class="recipe-ingredient-input" type="number" id="updateRecipeIngredient-ingredientQty-'+recipeID+'-'+ingredientID+'" name="ingredientQty" value="'+ingredient.ingredient_qty+'">';
+                        liForm.innerHTML += '<label for="IngredientQtyDisplayUOM">Unit:</label><select class="recipe-ingredient-input-long" id="updateRecipeIngredient-ingredientQtyDisplayUOM-'+recipeID+'-'+ingredientID+'" name="ingredientQtyDisplayUOM"><option value="g">g</option><option value="ml">ml</option><option value="cup">cup</option><option value="tbsp">tbsp</option><option value="tsp">tsp</option><option value="slices">slices</option></select>';
+                        liForm.innerHTML += '<label for="Ingredient">Ingredient:</label><select class="recipe-ingredient-input-extra-long" id="updateRecipeIngredient-ingredient-'+recipeID+'-'+ingredientID+'" name="ingredient"></select>';
+                        liForm.innerHTML += '<input class="buttons recipe-ingredient-button" type="submit" id="UpdateSaveCuisine" value="Update">';
+                        li.appendChild(liForm);
+                        selectedRecipeIngredientList.appendChild(li);
+                        const uomSelect = document.getElementById('updateRecipeIngredient-ingredientQtyDisplayUOM-'+recipeID+'-'+ingredientID);
+                        uomSelect.value = ingredient.ingredient_qty_display_uom;
+                        const ingredientSelect = document.getElementById('updateRecipeIngredient-ingredient-'+recipeID+'-'+ingredientID);
+                        ingredientList.forEach(ing => {
+                            const opt = document.createElement("option");
+                            opt.value = ing.ingredient_ID;
+                            opt.text = ing.name;
+                            ingredientSelect.appendChild(opt);
+                        })
+                        ingredientSelect.value = ingredient.ingredient_ID
+        
+                    })
+                }
             })
+
         }
-    })
+    });
+
     document.getElementById("single-recipe").style.display = "block";
 }
+
+function deleteIngredientOfRecipe(recipeID, ingredientID, recipeName) {
+    if(confirmDeletion()) {
+        $.ajax({
+            url: '/deleteIngredientOfRecipe/'+recipeID+'/'+ingredientID,
+            type: 'DELETE',
+            success: function(result) {
+                getSelectedRecipeIngredients(recipeID, recipeName); 
+                getSelectedRecipeAvgRating(recipeID);
+            },
+            error: function(error) {
+                alert(error.responseText);
+            }
+        })
+    }
+}
+
+
 // #endregion
 
 // #region INGREDIENTS

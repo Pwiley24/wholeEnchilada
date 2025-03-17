@@ -116,8 +116,8 @@ app.get('/getRecipeRatingsById/:recipeid', function(req, res, next) {
                 console.log("results: ", results);
                 if (results.length > 0) {
                     res.status(200).json(results); 
-                } else {
-                    res.status(404).json({ message: "No ratings found for this recipe." });
+                } else if (results.length == 0) {
+                    res.status(200).json({ message: "No ratings found for this recipe." });
                 }
             }
         );
@@ -152,6 +152,19 @@ app.put('/updateRecipe', function(req, res, next) {
     });
 
     res.status(200).send();
+});
+
+// Delete a recipe ingredient by IDs
+app.delete('/deleteIngredientOfRecipe/:recipeID/:ingredientID', function (req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("DELETE FROM IngredientsOfRecipes WHERE recipe_ID = ? AND ingredient_ID = ?", [req.params.recipeID, req.params.ingredientID], (err, results) => {
+            if (err) res.send(err);
+            res.sendStatus(204);
+        });
+        connection.release();
+    });
 });
 // #endregion
 

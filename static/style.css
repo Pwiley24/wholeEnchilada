@@ -265,8 +265,8 @@ footer {
 .recipe-post {
     display: inline-block;
     vertical-align: top;
-    height: 200px;
-    width: 340px;
+    /* height: 200px; */
+    /* width: 340px; */
     padding: 10px;
     margin: 0 10px 10px;
     background-color: #ECE3DA;
@@ -479,4 +479,31 @@ main {
 }
 .nomargin-bottom {
     margin-bottom: 0px;
+}
+
+.recipe-ingredient-button {
+    margin: 5px 10px;
+    background-color: #677100;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid #677100;
+}
+
+.recipe-ingredient-input {
+    max-width: 50px;
+    margin-right: 10px;
+}
+.recipe-ingredient-input-long {
+    max-width: 100px;
+    margin-right: 10px;
+}
+.recipe-ingredient-input-extra-long {
+    width: 200px;
+    margin-right: 10px;
+}
+.recipe-ingredient-form {
+    display: flex;
+}
+.recipe-ingredient-form label {
+    margin: auto;
 }
