@@ -1,4 +1,4 @@
-// ### Initialization ###
+// #region Initialization
 
 require('dotenv').config();
 
@@ -44,7 +44,7 @@ app.engine("handlebars", exphbs.engine({
 }));
 
 app.set("view engine", "handlebars");
-
+// #endregion
 
 // Display Home page
 app.get('', function (req, res, next) {
@@ -152,19 +152,6 @@ app.put('/updateRecipe', function(req, res, next) {
     });
 
     res.status(200).send();
-});
-
-// Delete a recipe ingredient by IDs
-app.delete('/deleteIngredientOfRecipe/:recipeID/:ingredientID', function (req, res, next) {
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-
-        pool.query("DELETE FROM IngredientsOfRecipes WHERE recipe_ID = ? AND ingredient_ID = ?", [req.params.recipeID, req.params.ingredientID], (err, results) => {
-            if (err) res.send(err);
-            res.sendStatus(204);
-        });
-        connection.release();
-    });
 });
 // #endregion
 
@@ -529,6 +516,34 @@ app.post('/addRecipeWithIngredients', function(req, res) {
                 });
         }
     );
+});
+
+// Delete a recipe ingredient by IDs
+app.delete('/deleteIngredientOfRecipe/:recipeID/:ingredientID', function (req, res, next) {
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("DELETE FROM IngredientsOfRecipes WHERE recipe_ID = ? AND ingredient_ID = ?", [req.params.recipeID, req.params.ingredientID], (err, results) => {
+            if (err) res.send(err);
+            res.sendStatus(204);
+        });
+        connection.release();
+    });
+});
+
+// Update a recipe ingredient by IDs
+app.put('/updateIngredientOfRecipe/:recipeID/:ingredientID', function (req, res, next) {
+    // const new_ingredient_id = parseInt(req.body.ingredient_ID);
+
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        pool.query("UPDATE IngredientsOfRecipes SET ingredient_ID = ?, ingredient_qty = ?, ingredient_qty_display_uom = ? WHERE recipe_ID = ? AND ingredient_ID = ?", [req.body.ingredient_ID, req.body.ingredient_qty, req.body.ingredient_qty_display_uom, req.params.recipeID, req.params.ingredientID], (err, results) => {
+            if (err) res.send(err);
+            res.sendStatus(204);
+        });
+        connection.release();
+    });
 });
 // #endregion
 

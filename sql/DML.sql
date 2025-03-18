@@ -63,6 +63,10 @@
 		LEFT JOIN Cuisines c ON r.cuisine_ID = c.cuisine_ID 
 	WHERE recipe_ID = :recipe_ID;
 
+	-- average rating
+	SELECT rw.rating
+    FROM Reviews rw
+    WHERE rw.recipe_id = :recipe_ID;
 -- UPDATE
 	UPDATE Recipes
 	SET name = :name, description = :description, cusine_ID = :cuisine_ID
@@ -177,7 +181,7 @@
 	WHERE cooked_ID = :cooked_ID;
 
 -- -----------------------------------------------------
--- Insert `IngredientsOfRecipes`
+-- IngredientsOfRecipes
 -- -----------------------------------------------------
 -- CREATE
 	INSERT INTO IngredientsOfRecipes (recipe_ID, ingredient_ID, ingredient_qty, ingredient_qty_to_gram, ingredient_qty_display_uom)
