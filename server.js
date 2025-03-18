@@ -113,7 +113,7 @@ app.get('/getRecipeRatingsById/:recipeid', function(req, res, next) {
             [req.params.recipeid], 
             (err, results) => {
                 if (err) throw err;
-                console.log("results: ", results);
+                // console.log("results: ", results);
                 if (results.length > 0) {
                     res.status(200).json(results); 
                 } else if (results.length == 0) {
