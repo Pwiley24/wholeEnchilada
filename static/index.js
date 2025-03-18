@@ -4,6 +4,25 @@
 // Based on:
 // Source URL: https://canvas.oregonstate.edu/courses/1987790/pages/exploration-developing-in-node-dot-js?module_item_id=25023025
 
+// #region Website Displays
+// Displays the recipe modal
+function showModal(){
+    var modalBackdrop = document.getElementById("modal-backdrop");
+    modalBackdrop.classList.remove("hidden");
+
+    var modal = document.getElementById("add-recipe-modal");
+    modal.classList.remove("hidden");
+}
+
+// Hides the recipe modal
+function hideModal(){
+    var modalBackdrop = document.getElementById("modal-backdrop");
+    modalBackdrop.classList.add("hidden");
+
+    var modal = document.getElementById("add-recipe-modal");
+    modal.classList.add("hidden");
+}
+
 function addRecord() {
     document.getElementById("browse").style.display = "none";
     document.getElementById("insert").style.display = "block";
@@ -26,85 +45,10 @@ function addRecord() {
     const element = document.getElementById("single-recipe");
     element.scrollIntoView({ behavior: 'smooth' });
   }
+  // #endregion
 
 
-/*
- * Function to insert a new recipe into the database. Takes
- * in the elements of a new recipe element.
- */
-function insertNewRecipe() {
-    var recipe_name = document.getElementById('recipe-name').value;
-    var description = document.getElementById('modal-description').value;
-    var selectElement = document.getElementById('modal-cuisine');
-    var cuisine_ID = selectElement.value;
-    if (cuisine_ID === '') cuisine_ID = null;
-
-    var ingredients = getIngredientData();
-
-    const recipeData = {
-        recipe_name: recipe_name,
-        description: description,
-        cuisine_ID: cuisine_ID,
-        ingredients: ingredients
-    };
-    fetch('/addRecipeWithIngredients', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(recipeData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.reload();
-        } else {
-            console.error('Error adding ingredient:', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error HERE:', error);
-    });   
-    hideModal();
-}
-
-// Function to add a new row for ingredients
-function addIngredientDOM(){
-    const container = document.getElementById('ingredients-container');
-    const ingredientGroup = document.querySelector('.ingredient-group'); 
-
-
-    const newIngredientGroup = ingredientGroup.cloneNode(true);
-
-    //reset input values for ingredient row
-    newIngredientGroup.querySelector('input[type="number"]').value = ''; 
-    newIngredientGroup.querySelector('select[name="ingredientUOM[]"]').value = 'g'; 
-    newIngredientGroup.querySelector('select[name="recipe-ingredient"]').value = ''; 
-
-    container.appendChild(newIngredientGroup);
-}
-
-
-// Function to gather all ingredient data
-function getIngredientData() {
-    const ingredients = [];
-    const ingredientElements = document.querySelectorAll('.ingredient-group'); 
-    ingredientElements.forEach(element => {
-        const ingredient_ID = element.querySelector('.ingredient-select').value; 
-        const ingredient_qty = element.querySelector('input[type="number"]').value; 
-        const ingredient_uom = element.querySelector('select[name="ingredientUOM[]"]').value; 
-
-        ingredients.push({
-            ingredient_ID: ingredient_ID,
-            ingredient_qty: ingredient_qty,
-            ingredient_uom: ingredient_uom
-        });
-    });
-
-    return ingredients;
-}
-
-
+// #region Recipe Filters
 /*
  * A function to apply the current filters to a specific recipe.  Returns true
  * if the recipe passes the filters and should be displayed and false otherwise.
@@ -118,7 +62,6 @@ function recipePassesFilters(recipe, filters) {
         }
     }
 
-
     var passesCuisine = true;
     if (filters.cuisine) {
         if (recipe.cuisine.indexOf(filters.cuisine) === -1) {
@@ -126,33 +69,7 @@ function recipePassesFilters(recipe, filters) {
         }
     }
 
-    // Check rating filters --> to be adjusted later
-    var passesRating1 = true;
-    if (filters.rating1.checked) {
-        passesRating1 = true; 
-    }
-
-    var passesRating2 = true;
-    if (filters.rating2.checked) {
-        passesRating2 = true; 
-    }
-
-    var passesRating3 = true;
-    if (filters.rating3.checked) {
-        passesRating3 = true; 
-    }
-
-    var passesRating4 = true;
-    if (filters.rating4.checked) {
-        passesRating4 = true; 
-    }
-
-    var passesRating5 = true;
-    if (filters.rating5.checked) {
-        passesRating5 = true; 
-    }
-
-    var filterVals = [passesText, passesCuisine, passesRating1, passesRating2, passesRating3, passesRating4, passesRating5]
+    var filterVals = [passesText, passesCuisine]
     return filterVals;
 }
 
@@ -177,41 +94,35 @@ function doFilterUpdate() {
     var filters = {
         text: document.getElementById("filter-text").value.trim(),
         cuisine: document.getElementById("filter-cuisine").value.toLowerCase(),
-        rating1: document.getElementById("filter-1"),
-        rating2: document.getElementById("filter-2"),
-        rating3: document.getElementById("filter-3"),
-        rating4: document.getElementById("filter-4"),
-        rating5: document.getElementById("filter-5")
     };
 
-    // Select all rows in the recipe table body (excluding the header)
+    // Select all recipes from rows
     var recipeContainer = document.getElementById("recipe-container");
     var recipeRows = recipeContainer.getElementsByTagName("tr");
 
-    // Reset all rows to visible before applying new filters
+    // Reset all rows to visible
     Array.from(recipeRows).forEach(row => row.classList.remove("hidden"));
 
-    // Iterate over each row and apply the filters
+    // Check each recipe
     Array.from(recipeRows).forEach(row => {
-        // Skip the header row (which contains <th> elements)
         if (row.querySelector('th')) return;
 
-        // Get the content of each column (adjust the index based on your table's structure)
-        var recipeName = row.cells[1].textContent.toLowerCase(); // Recipe Name in the second column
-        var recipeDescription = row.cells[2].textContent.toLowerCase(); // Description in the third column
-        var cuisineName = row.cells[3].textContent.toLowerCase(); // Cuisine Name in the fourth column
+        // Get the content of each recipe
+        var recipeName = row.cells[1].textContent.toLowerCase(); 
+        var recipeDescription = row.cells[2].textContent.toLowerCase(); 
+        var cuisineName = row.cells[3].textContent.toLowerCase(); 
 
-        // Use recipePassesFilters function to check if this recipe passes the filters
+        //recipe data
         var recipe = {
             name: recipeName,
             text: recipeDescription,
             cuisine: cuisineName
         };
 
-        // Apply the filter check
+        // Apply filter check
         var passesFilters = recipePassesFilters(recipe, filters);
 
-        // If the recipe passes all filters, keep it visible, otherwise hide it
+        // If the recipe passes all filters, keep it visible, else hide it
         if (!(passesFilters[0]) || !(passesFilters[1])) {
             row.classList.add("hidden");
         } else {
@@ -219,23 +130,10 @@ function doFilterUpdate() {
         }
     });
 }
+// #endregion
 
-function showModal(){
-    var modalBackdrop = document.getElementById("modal-backdrop");
-    modalBackdrop.classList.remove("hidden");
 
-    var modal = document.getElementById("add-recipe-modal");
-    modal.classList.remove("hidden");
-}
-
-function hideModal(){
-    var modalBackdrop = document.getElementById("modal-backdrop");
-    modalBackdrop.classList.add("hidden");
-
-    var modal = document.getElementById("add-recipe-modal");
-    modal.classList.add("hidden");
-}
-
+// #region Event Listeners
 //Check if the filter button exists
 var filterUpdateButton = document.getElementById("filter-update-button");
 
@@ -282,9 +180,50 @@ if (modalAddButton) {
         insertNewRecipe()
     })
 }
+// #endregion
 
 
 // #region RECIPES
+/*
+ * Function to insert a new recipe into the database. Takes
+ * in the elements of a new recipe element.
+ */
+function insertNewRecipe() {
+    var recipe_name = document.getElementById('recipe-name').value;
+    var description = document.getElementById('modal-description').value;
+    var selectElement = document.getElementById('modal-cuisine');
+    var cuisine_ID = selectElement.value;
+    if (cuisine_ID === '') cuisine_ID = null;
+
+    var ingredients = getIngredientData();
+
+    const recipeData = {
+        recipe_name: recipe_name,
+        description: description,
+        cuisine_ID: cuisine_ID,
+        ingredients: ingredients
+    };
+    fetch('/addRecipeWithIngredients', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recipeData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.reload();
+        } else {
+            console.error('Error adding ingredient:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error HERE:', error);
+    });   
+    hideModal();
+}
+
 // Delete a recipe
 function deleteRecipe(recipeID) {
     if(confirmDeletion()){
@@ -493,6 +432,42 @@ function hideIngredientOfRecipeEdit(recipeID, ingredientID) {
 // #endregion
 
 // #region INGREDIENTS
+// Function to add a new row for ingredients
+function addIngredientDOM(){
+    const container = document.getElementById('ingredients-container');
+    const ingredientGroup = document.querySelector('.ingredient-group'); 
+
+
+    const newIngredientGroup = ingredientGroup.cloneNode(true);
+
+    //reset input values for ingredient row
+    newIngredientGroup.querySelector('input[type="number"]').value = ''; 
+    newIngredientGroup.querySelector('select[name="ingredientUOM[]"]').value = 'g'; 
+    newIngredientGroup.querySelector('select[name="recipe-ingredient"]').value = ''; 
+
+    container.appendChild(newIngredientGroup);
+}
+
+
+// Function to gather all ingredient data
+function getIngredientData() {
+    const ingredients = [];
+    const ingredientElements = document.querySelectorAll('.ingredient-group'); 
+    ingredientElements.forEach(element => {
+        const ingredient_ID = element.querySelector('.ingredient-select').value; 
+        const ingredient_qty = element.querySelector('input[type="number"]').value; 
+        const ingredient_uom = element.querySelector('select[name="ingredientUOM[]"]').value; 
+
+        ingredients.push({
+            ingredient_ID: ingredient_ID,
+            ingredient_qty: ingredient_qty,
+            ingredient_uom: ingredient_uom
+        });
+    });
+
+    return ingredients;
+}
+
 // Delete an Ingredient
 function deleteIngredient(ingredientID) {
     if(confirmDeletion()){
