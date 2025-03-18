@@ -143,7 +143,7 @@ VALUES
 ('BBQ Pizza', 'Pizza with bbq sauce and chicken.', (SELECT cuisine_ID FROM Cuisines WHERE name = 'American')),
 ('Pesto Pasta', 'Pasta with pesto and chicken.', (SELECT cuisine_ID FROM Cuisines WHERE name = 'Italian')),
 ('Gyro', 'Lamb, tomato, spinach, and feta combined inside a pita wrap.', (SELECT cuisine_ID FROM Cuisines WHERE name = 'Mediterranean')),
-('Breakfast Burrito', 'Egg, cheese, salsa, canadian bacon, avacado wrappen inside a tortilla.', (SELECT cuisine_ID FROM Cuisines WHERE name = 'Mexican'));
+('Breakfast Burrito', 'Egg, cheese, salsa, canadian bacon, avocado wrappen inside a tortilla.', (SELECT cuisine_ID FROM Cuisines WHERE name = 'Mexican'));
 
 
 -- -----------------------------------------------------
@@ -154,7 +154,7 @@ VALUES
 ('Chicken', 0.00904761904),
 ('Olive Oil', 0.0196),
 ('Egg', 0.5),
-('Avacado', 0.00275),
+('Avocado', 0.00275),
 ('Pita Bread', 0.02645549304);
 
 
@@ -177,7 +177,7 @@ VALUES
 INSERT INTO CookedRecipes (recipe_ID, timestamp, alteration, notes)
 VALUES
 ((SELECT recipe_ID FROM Recipes WHERE name = 'Orange Chicken'), '2012-12-29', 'Substitute tofu for chicken.', 	NULL),
-((SELECT recipe_ID FROM Recipes WHERE name = 'Gyro'), '2020-09-12', NULL, 'Cook for extra 5 minutes.'),
+((SELECT recipe_ID FROM Recipes WHERE name = 'Gyro'), '2020-09-12', NULL, 'Cook for an extra 5 minutes.'),
 ((SELECT recipe_ID FROM Recipes WHERE name = 'Breakfast Burrito'), '2003-03-02', NULL, NULL),
 ((SELECT recipe_ID FROM Recipes WHERE name = 'BBQ Pizza'), '2019-06-17', 'Used a gluten free crust.', NULL),
 ((SELECT recipe_ID FROM Recipes WHERE name = 'Pesto Pasta'), '2025-04-10', NULL, 'Add parmesan for serving.');
